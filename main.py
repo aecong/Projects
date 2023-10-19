@@ -4,9 +4,6 @@ import game_world
 from title import Title, Name, TitleCookie, TitleLaser
 
 
-# Game object class here
-
-
 def handle_events():
     global running
 
@@ -16,9 +13,18 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
-        else:
-            name.handle_events((event.type, event))
-
+        elif event.type == SDL_MOUSEMOTION:  # 마우스 이동 이벤트
+            x, y = event.x, 600 - event.y  # 좌표 변환
+            if x >= 500 and x <= 500 + name.size_x and y >= 150 and y <= 150 + name.size_y:
+                name.is_mouse_over = True
+            else:
+                name.is_mouse_over = False
+        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:  # 마우스 클릭 이벤트
+            if name.is_mouse_over:
+                game_world.remove_object(name)
+                game_world.remove_object(title)
+                game_world.remove_object(titlelaser)
+                game_world.remove_object(titlecookie)
 
 
 def reset_world():
@@ -36,9 +42,9 @@ def reset_world():
     game_world.add_object(titlecookie, 1)
     game_world.add_object(titlelaser, 2)
 
+
 def update_world():
     game_world.update()
-
 
 
 def render_world():

@@ -2,10 +2,8 @@ from pico2d import *
 
 import game_world
 
-click = False
-
-
 class Title:
+    global click
     def __init__(self):
         self.image = load_image('resource/title.png')
 
@@ -13,8 +11,7 @@ class Title:
         self.image.draw(400, 300, 900, 700)
 
     def update(self):
-        if click:
-            game_world.remove_object(self)
+        pass
 
 
 class Name:
@@ -22,7 +19,8 @@ class Name:
         self.image = load_image('resource/name.png')
         self.size_x = 506
         self.size_y = 111
-        self.is_mouse_over = False  # 마우스가 객체 위에 있는지 여부
+        self.is_mouse_over = False  # 마우스가 위에 있는지 여부
+
 
     def draw(self):
         self.image.draw(500, 150, self.size_x, self.size_y)
@@ -35,20 +33,6 @@ class Name:
                 self.size_x = 506
                 self.size_y = 111
 
-    def handle_events(self, e):
-        global click
-        if e[0] == 'INPUT' and e[1].type == SDL_MOUSEMOTION:
-            x, y = e[1].x, e[1].y
-            # 마우스 좌표와 객체 좌표를 비교하여 마우스가 객체 위에 있는지 확인
-            if 500 - self.size_x / 2 < x < 500 + self.size_x / 2 and 150 - self.size_y / 2 < y < 150 + self.size_y / 2:
-                self.is_mouse_over = True
-                print('mouseover')
-            else:
-                self.is_mouse_over = False
-        elif e[0] == 'INPUT' and e[1].type == SDL_MOUSEBUTTONDOWN and e[1].key == SDLK_LEFT:
-            if self.is_mouse_over:
-                game_world.remove_object(self)
-                click = True
 
 
 class TitleCookie:
@@ -61,8 +45,6 @@ class TitleCookie:
 
     def update(self):
         self.frame = (self.frame + 1) % 4
-        if click:
-            game_world.remove_object(self)
 
 
 class TitleLaser:
@@ -75,5 +57,3 @@ class TitleLaser:
 
     def update(self):
         self.frame = (self.frame + 1) % 3
-        if click:
-            game_world.remove_object(self)
