@@ -18,7 +18,7 @@ def time_out(e):
 class Run:
 
     @staticmethod
-    def enter(boy, e):
+    def enter(cookie, e):
         pass
 
     @staticmethod
@@ -27,12 +27,12 @@ class Run:
 
     @staticmethod
     def do(cookie):
-        cookie.frame = (cookie.frame + 1) % 8
+        cookie.frame = (cookie.frame + 1) % 4
         pass
 
     @staticmethod
     def draw(cookie):
-        cookie.image.clip_draw(cookie.frame * 100, cookie.action * 100, 100, 100, cookie.x, cookie.y)
+        cookie.image.clip_draw(cookie.frame * 160, cookie.action * 165, 160, 165, cookie.x, cookie.y)
 
 
 class Jump:
@@ -40,22 +40,23 @@ class Jump:
     @staticmethod
     def enter(cookie, e):
         if space_down(e):
-            pass
+            cookie.action = 2
 
     @staticmethod
     def exit(cookie, e):
-        if space_down(e):
-            pass
+        cookie.y = 120
         pass
 
     @staticmethod
     def do(cookie):
-        cookie.frame = (cookie.frame + 1) % 8
+        cookie.frame = (cookie.frame + 1) % 4
+        if cookie.y <= 200:
+            cookie.y += 5
         pass
 
     @staticmethod
     def draw(cookie):
-        cookie.image.clip_draw(cookie.frame * 100, cookie.action * 100, 100, 100, cookie.x, cookie.y)
+        cookie.image.clip_draw(cookie.frame * 160, cookie.action * 165, 160, 165, cookie.x, cookie.y)
 
 
 class StateMachine:
@@ -89,11 +90,10 @@ class StateMachine:
 
 class Cookie:
     def __init__(self):
-        self.x, self.y = 100, 90
+        self.x, self.y = 100, 120
         self.frame = 0
-        self.action = 3
-        self.face_dir = 1
-        self.image = load_image('resource/animation_sheet.png')
+        self.action = 3  # 0 - 눈빛 점프 1 - 눈빛 달리기 2 - 그냥 점프 3 - 그냥 달리기
+        self.image = load_image('resource/cookie_sheet.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 

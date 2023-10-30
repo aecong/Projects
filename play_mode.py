@@ -26,7 +26,6 @@ def handle_events():
 def init():
     global running
     global cookie
-    global pet
 
     running = True
 
