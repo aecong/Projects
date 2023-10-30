@@ -26,6 +26,7 @@ def handle_events():
 def init():
     global running
     global cookie
+    global pet
 
     running = True
 
@@ -33,9 +34,10 @@ def init():
     game_world.add_object(cookie, 1)
 
 
+
+
 def finish():
     game_world.clear()
-    pass
 
 
 def update():

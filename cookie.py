@@ -7,7 +7,7 @@ def space_down(e):  # 점프
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
 
-def a_down(e):  # 아이템 사용 키
+def i_down(e):  # 아이템 사용 키
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_i
 
 
@@ -28,7 +28,6 @@ class Run:
     @staticmethod
     def do(cookie):
         cookie.frame = (cookie.frame + 1) % 8
-        cookie.x += 5
         pass
 
     @staticmethod
@@ -52,7 +51,6 @@ class Jump:
     @staticmethod
     def do(cookie):
         cookie.frame = (cookie.frame + 1) % 8
-        cookie.x += 5
         pass
 
     @staticmethod
@@ -91,7 +89,7 @@ class StateMachine:
 
 class Cookie:
     def __init__(self):
-        self.x, self.y = 400, 90
+        self.x, self.y = 100, 90
         self.frame = 0
         self.action = 3
         self.face_dir = 1
