@@ -8,7 +8,7 @@ def space_down(e):  # 점프
 
 
 def a_down(e):  # 아이템 사용 키
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_i
 
 
 def time_out(e):
@@ -23,14 +23,12 @@ class Run:
 
     @staticmethod
     def exit(cookie, e):
-        if space_down(e):
-            cookie.fire_ball()
         pass
 
     @staticmethod
     def do(cookie):
         cookie.frame = (cookie.frame + 1) % 8
-        cookie.x += cookie.dir * 5
+        cookie.x += 5
         pass
 
     @staticmethod
@@ -54,7 +52,7 @@ class Jump:
     @staticmethod
     def do(cookie):
         cookie.frame = (cookie.frame + 1) % 8
-        cookie.x += cookie.dir * 5
+        cookie.x += 5
         pass
 
     @staticmethod
@@ -96,9 +94,8 @@ class Cookie:
         self.x, self.y = 400, 90
         self.frame = 0
         self.action = 3
-        self.dir = 0
         self.face_dir = 1
-        self.image = load_image('animation_sheet.png')
+        self.image = load_image('resource/animation_sheet.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 

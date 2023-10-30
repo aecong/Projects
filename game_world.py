@@ -1,4 +1,4 @@
-objects = [[], [], []]
+objects = [[] for _ in range(4)]
 
 
 def add_object(o, depth=0):   # 게임 월드에 객체 추가
@@ -26,3 +26,8 @@ def remove_object(o):
             layer.remove(o)
             return
     raise ValueError('존재하지 않는 객체는 지울 수 없음') # 코드 강제 발생
+
+
+def clear():
+    for layer in objects:
+        layer.clear()
