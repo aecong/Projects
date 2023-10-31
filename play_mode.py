@@ -4,6 +4,7 @@ import cookie
 import game_framework
 import game_world
 import title_mode
+from background import Background
 from cookie import Cookie
 
 
@@ -26,13 +27,15 @@ def handle_events():
 def init():
     global running
     global cookie
+    global background
 
     running = True
 
     cookie = Cookie()
     game_world.add_object(cookie, 1)
 
-
+    background = Background()
+    game_world.add_object(background, 0)
 
 
 def finish():

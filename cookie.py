@@ -36,23 +36,28 @@ class Run:
 
 
 class Jump:
-
     @staticmethod
     def enter(cookie, e):
+        global up
         if space_down(e):
             cookie.action = 2
+            up = 1
+        cookie.jump_time = get_time()
 
     @staticmethod
     def exit(cookie, e):
-        cookie.y = 120
+        cookie.action = 3
         pass
 
     @staticmethod
     def do(cookie):
-        cookie.frame = (cookie.frame + 1) % 4
-        if cookie.y <= 200:
-            cookie.y += 5
-        pass
+        cookie.frame = 2
+        if get_time() - cookie.jump_time > 1:
+            cookie.y -= 1
+            if cookie.y == 120:
+                cookie.state_machine.handle_event(('TIME_OUT', 0))
+        else:
+            cookie.y += 1
 
     @staticmethod
     def draw(cookie):
@@ -92,7 +97,7 @@ class Cookie:
     def __init__(self):
         self.x, self.y = 100, 120
         self.frame = 0
-        self.action = 3  # 0 - 눈빛 점프 1 - 눈빛 달리기 2 - 그냥 점프 3 - 그냥 달리기
+        self.action = 3  # 0 : 눈빛 점프. 1 : 눈빛 달리기, 2 : 그냥 점프, 3 : 그냥 달리기
         self.image = load_image('resource/cookie_sheet.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
