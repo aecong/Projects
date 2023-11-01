@@ -52,7 +52,7 @@ class Jump:
     @staticmethod
     def do(cookie):
         cookie.frame = 2
-        if get_time() - cookie.jump_time > 1:
+        if get_time() - cookie.jump_time > 0.5:
             cookie.y -= 1
             if cookie.y == 120:
                 cookie.state_machine.handle_event(('TIME_OUT', 0))
@@ -95,7 +95,7 @@ class StateMachine:
 
 class Cookie:
     def __init__(self):
-        self.x, self.y = 100, 120
+        self.x, self.y = 100, 200
         self.frame = 0
         self.action = 3  # 0 : 눈빛 점프. 1 : 눈빛 달리기, 2 : 그냥 점프, 3 : 그냥 달리기
         self.image = load_image('resource/cookie_sheet.png')
