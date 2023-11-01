@@ -6,6 +6,7 @@ import game_world
 import title_mode
 from background import Background
 from cookie import Cookie
+from obstacle import Obstacle
 
 
 # Game object class here
@@ -28,6 +29,7 @@ def init():
     global running
     global cookie
     global background
+    global obstacle
 
     running = True
 
@@ -37,6 +39,8 @@ def init():
     background = Background()
     game_world.add_object(background, 0)
 
+    obstacle = Obstacle()
+    game_world.add_object(obstacle, 1)
 
 def finish():
     game_world.clear()
