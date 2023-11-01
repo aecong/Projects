@@ -52,9 +52,9 @@ class Jump:
     @staticmethod
     def do(cookie):
         cookie.frame = 2
-        if get_time() - cookie.jump_time > 0.5:
+        if get_time() - cookie.jump_time > 0.7:
             cookie.y -= 1
-            if cookie.y == 120:
+            if cookie.y == 200:
                 cookie.state_machine.handle_event(('TIME_OUT', 0))
         else:
             cookie.y += 1
