@@ -2,7 +2,7 @@ import random
 
 from pico2d import *
 
-import end_mode
+import happyending_mode
 import game_framework
 
 import game_world
@@ -88,7 +88,7 @@ def update():
     game_world.update()
     game_world.handle_collisions()
     if cookie.time > 60.0:
-        game_framework.change_mode(end_mode)
+        game_framework.change_mode(happyending_mode)
 
 def draw():
     clear_canvas()
