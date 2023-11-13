@@ -10,6 +10,16 @@ RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
 
+class Happybackground:
+    def __init__(self):
+        self.image = load_image('resource/happyending_back.png')
+
+    def draw(self):
+        self.image.draw(400, 300, 736, 497)
+
+    def update(self):
+        pass
+
 class Shotputbackground:
     def __init__(self):
         self.x = 0
