@@ -21,7 +21,7 @@ def handle_events():
 
 
 def init():
-
+    Happybackground.ending = True
     global running
     global cookie
     global background
