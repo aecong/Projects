@@ -1,7 +1,6 @@
 from pico2d import *
 
 import game_framework
-from cookie import Cookie
 from popcorn import Popcorn
 
 PIXEL_PER_METER = (10.0 / 0.3)
@@ -10,12 +9,17 @@ RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
 
-class Happybackground:
-    def __init__(self):
-        self.image = load_image('resource/happyending_back.png')
 
+class Happybackground:
+    image = None
+    def __init__(self):
+        if Happybackground.image == None:
+            self.image = load_image('resource/happyending_back.png')
+        self.bgm = load_music('resource/bgm_happyending.mp3')
+        self.bgm.set_volume(32)
+        self.bgm.repeat_play()
     def draw(self):
-        self.image.draw(400, 300, 736, 497)
+        self.image.draw(400, 300, 800, 600)
 
     def update(self):
         pass
