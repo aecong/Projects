@@ -4,7 +4,6 @@ import game_framework
 import game_world
 from hp import Hp
 
-
 def space_down(e):  # 점프
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
@@ -214,8 +213,13 @@ class Cookie:
 
     def draw(self):
         self.state_machine.draw()
-        self.font.draw(self.x, self.y + 100, f'{self.itemCount:2d}', (255, 255, 0))
-        self.font.draw(0, 550, f'{self.time:5f}', (255, 0, 0))
+        if self.time < 60:
+            self.font.draw(self.x, self.y + 100, f'{self.itemCount:2d}', (255, 255, 0))
+            self.font.draw(600, 450, f'{self.time:1f}', (255, 0, 0))
+        else:
+            self.font = load_font('resource/CookieRun Regular.TTF', 100)
+            self.font.draw(340, 200, f'{self.itemCount:2d}', (255, 255, 0))
+
     def get_bb(self):
         return self.x - 40, self.y - 60, self.x + 40, self.y + 60
 
