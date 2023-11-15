@@ -84,6 +84,7 @@ def finish():
     game_world.clear()
 
 
+
 def update():
     game_world.update()
     game_world.handle_collisions()
