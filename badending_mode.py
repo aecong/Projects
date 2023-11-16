@@ -18,11 +18,14 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_r:
-            game_framework.change_mode(play_mode)
-            Hp.hpCnt = 0
+            Hp.hpCnt = 850
             Cookie.itemCount = 0
-            cookie.time = get_time()
+            Cookie.time = get_time()
+            game_framework.change_mode(play_mode)
+
         else:
             cookie.handle_event(event)
 
@@ -31,12 +34,9 @@ def init():
     global running
     global cookie
     global background
-    global sound
-
-    sound = Backgroundsound()   # sound 바꾸기
 
     cookie = Cookie()
-    game_world.add_object(cookie, 1)
+    # game_world.add_object(cookie, 1)
 
     background = Badbackground()
     game_world.add_object(background, 0)
@@ -47,7 +47,6 @@ def finish():
 
 def update():
     game_world.update()
-    game_world.handle_collisions()
 
 def draw():
     clear_canvas()
