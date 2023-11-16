@@ -68,6 +68,8 @@ def update():
     game_world.handle_collisions()
     if cookie.time > 30.0:
         game_framework.change_mode(shotput_mode)
+    if Hp.hpCnt >= 440:
+        game_framework.change_mode(badending_mode)
 
 
 def draw():
