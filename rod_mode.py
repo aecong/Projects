@@ -13,7 +13,6 @@ from cookie import Cookie
 from floor import Floor, nextFloor, Floorelseleft, nextFloorelse
 from hp import Hp, Hpicon
 from item import Item
-from obstacle import Obstacle
 from popcorn import Popcorn
 from rod import Rod
 from sound import Backgroundsound, Clicksound
@@ -30,7 +29,6 @@ def handle_events():
             if Popcorn.eat == 0:
                 Popcorn.eat = 1
             elif Popcorn.eat == 1:
-                Rod.size = Rod.frame
                 Popcorn.eat = 2
             Clicksound.bgm.play()
             if Rod.Mode == 0:
@@ -42,6 +40,7 @@ def handle_events():
                 Rod.Mode = 1
             elif Rod.Mode == 1:
                 Rod.size = Rod.frame
+                print(int(Rod.size))
                 Rod.Mode = 2
         else:
             cookie.handle_event(event)
