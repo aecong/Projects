@@ -9,6 +9,19 @@ RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
 
+class Badbackground:
+    image = None
+    def __init__(self):
+        if Badbackground.image == None:
+            self.image = load_image('resource/badending_back.png')
+        self.bgm = load_music('resource/bgm_badending.mp3')
+        self.bgm.set_volume(32)
+        self.bgm.repeat_play()
+    def draw(self):
+        self.image.draw(400, 300, 800, 600)
+
+    def update(self):
+        pass
 
 class Happybackground:
     image = None
