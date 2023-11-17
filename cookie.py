@@ -162,7 +162,6 @@ class StateMachine:
                 if check_event == i_down:
                     if Cookie.itemCount >= 10:
                         Cookie.itemCount -= 10
-                        Cookie.speed = 10.0
                         Cookie.transform_sound.play()
 
                 self.cur_state.exit(self.cookie, e)
@@ -178,11 +177,12 @@ class StateMachine:
 
 
 class Cookie:
-    speed = 0.0
     itemCount = 0
     jump_sound = None
     transform_sound = None
     hp_sound = None
+    time = 0.0
+    start = False
     def __init__(self):
         self.image = load_image('resource/cookie_sheet.png')
         self.x, self.y = 100, 200
@@ -191,7 +191,6 @@ class Cookie:
         self.action = 3  # 0 : 눈빛 점프. 1 : 눈빛 달리기, 2 : 그냥 점프, 3 : 그냥 달리기
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-        self.time = get_time()
 
         if not Cookie.jump_sound:
             Cookie.jump_sound = load_wav('resource/bgm_jump.wav')
@@ -201,12 +200,13 @@ class Cookie:
             Cookie.transform_sound.set_volume(32)
         if not Cookie.hp_sound:
             Cookie.hp_sound = load_wav('resource/bgm_hpdecrease.wav')
-            Cookie.hp_sound.set_volume(32)
+            Cookie.hp_sound.set_volume(16)
 
     def update(self):
         self.state_machine.update()
-        current_time = get_time()
-        self.time += current_time - self.time
+        if self.start:
+            current_time = get_time()
+            self.time += current_time - self.time
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -215,7 +215,7 @@ class Cookie:
         self.state_machine.draw()
         if self.time < 60:
             self.font.draw(self.x, self.y + 100, f'{self.itemCount:2d}', (255, 255, 0))
-            self.font.draw(600, 450, f'{self.time:1f}', (255, 0, 0))
+            self.font.draw(600, 450, f'{Cookie.time:1f}', (255, 0, 0))
         else:
             self.font = load_font('resource/CookieRun Regular.TTF', 100)
             self.font.draw(340, 200, f'{self.itemCount:2d}', (255, 255, 0))
