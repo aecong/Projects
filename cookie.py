@@ -175,14 +175,18 @@ class StateMachine:
         self.cur_state.draw(self.cookie)
 
 
-
+POPCORN_SPEED_KMPH = 0.1
+POPCORN_SPEED_MPM = POPCORN_SPEED_KMPH * 1000.0 / 60.0
+POPCORN_SPEED_MPS = POPCORN_SPEED_MPM / 60.0
+POPCORN_SPEED_PPS = POPCORN_SPEED_MPS * PIXEL_PER_METER
 class Cookie:
     itemCount = 0
     jump_sound = None
     transform_sound = None
     hp_sound = None
-    time = 0.0
     start = False
+    time = 0.0
+
     def __init__(self):
         self.image = load_image('resource/cookie_sheet.png')
         self.x, self.y = 100, 200
@@ -205,8 +209,9 @@ class Cookie:
     def update(self):
         self.state_machine.update()
         if self.start:
-            current_time = get_time()
-            self.time += current_time - self.time
+            # current_time = get_time()
+            # Cookie.time += current_time - Cookie.time
+            Cookie.time += POPCORN_SPEED_PPS * game_framework.frame_time
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -225,14 +230,15 @@ class Cookie:
 
     def handle_collision(self, group, other):
         if group == 'cookie:obstacle':
-            if self.action == 2 or self.action == 3:
-                Hp.hpCnt -= 5
-                Hp.x -= 2.5
-                Cookie.hp_sound.play()
-                return
-            elif self.action == 0 or self.action == 1:
-                Cookie.transform_sound.play()
-                return
+            if self.start:
+                if self.action == 2 or self.action == 3:
+                    Hp.hpCnt -= 2.5
+                    Hp.x -= 1.25
+                    Cookie.hp_sound.play()
+
+                elif self.action == 0 or self.action == 1:
+                    Cookie.transform_sound.play()
+
 
         elif group == 'cookie:item':
             if self.action == 2 or self.action == 3:
