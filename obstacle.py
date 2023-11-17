@@ -5,6 +5,7 @@ from pico2d import load_image, draw_rectangle
 
 import game_framework
 import game_world
+from cookie import Cookie
 from popcorn import Popcorn
 
 PIXEL_PER_METER = (10.0 / 0.3)
@@ -33,7 +34,7 @@ class Obstacle:
             self.image.draw(self.x, 200, 150, 200)
         else:
             self.image.clip_composite_draw(0, 0, 150, 200, -math.pi / 2, '', self.x, 150, 150, 200)
-
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         if Popcorn.eat == 0:
@@ -48,4 +49,4 @@ class Obstacle:
     def handle_collision(self, group, other):
         if group == 'cookie:obstacle':
             self.falldown = 1
-            pass
+            return
