@@ -1,4 +1,4 @@
-from pico2d import load_image, get_events, clear_canvas, update_canvas, delay
+from pico2d import *
 from sdl2 import SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE
 
 import game_framework
@@ -14,7 +14,6 @@ def init():
     titlelaser = load_image('resource/title_laser.png')
     titlecookie = load_image('resource/title_cookie.png')
     titlename = load_image('resource/name.png')
-
     titlecookie.frame = 0
     titlelaser.frame = 0
     sound = Titlesound()
@@ -28,6 +27,7 @@ def handle_events():
         if event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
+            Cookie.start = True
             game_framework.change_mode(play_mode)
 
 def draw():
