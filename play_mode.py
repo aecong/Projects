@@ -1,6 +1,8 @@
 import random
 
 from pico2d import *
+
+import badending_mode
 import game_framework
 
 import game_world
@@ -20,6 +22,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+            Cookie.start = False
             game_framework.change_mode(title_mode)
         else:
             cookie.handle_event(event)
@@ -68,7 +71,7 @@ def update():
     game_world.handle_collisions()
     if cookie.time > 30.0:
         game_framework.change_mode(shotput_mode)
-    if Hp.hpCnt >= 440:
+    if Hp.hpCnt <= 0:
         game_framework.change_mode(badending_mode)
 
 
