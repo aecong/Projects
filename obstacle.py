@@ -44,7 +44,11 @@ class Obstacle:
             self.falldown = 0
 
     def get_bb(self):
-        return self.x - 40, self.y - 100, self.x + 40, self.y + 10
+        if self.falldown == 0:
+            return self.x - 40, self.y - 100, self.x + 40, self.y + 10
+        else:
+            return self.x - 80, self.y - 100, self.x, self.y + 10
+
 
     def handle_collision(self, group, other):
         if group == 'cookie:obstacle':
