@@ -5,6 +5,7 @@ import game_framework
 
 import game_world
 import play_mode
+import title_mode
 from background import Background, Happybackground
 from cookie import Cookie
 from hp import Hp
@@ -17,11 +18,15 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.quit()
+            Cookie.jump_sound.play()
+            game_framework.change_mode(title_mode)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_r:
             Hp.hpCnt = 850
             Cookie.itemCount = 0
-            Cookie.time = None
+            Hp.x = 0
+            Cookie.start = True
+            Cookie.time = 0.0
+            Cookie.jump_sound.play()
             game_framework.change_mode(play_mode)
 
         else:
@@ -29,6 +34,8 @@ def handle_events():
 
 
 def init():
+    Cookie.start = False
+
     global running
     global cookie
     global background
