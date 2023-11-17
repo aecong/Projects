@@ -4,8 +4,10 @@ from pico2d import *
 import game_framework
 
 import game_world
+import play_mode
 from background import Background, Happybackground
 from cookie import Cookie
+from hp import Hp
 from sound import Backgroundsound
 
 
@@ -16,20 +18,21 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_r:
+            Hp.hpCnt = 850
+            Cookie.itemCount = 0
+            Cookie.time = None
+            game_framework.change_mode(play_mode)
+
         else:
             cookie.handle_event(event)
 
 
 def init():
-    Happybackground.ending = True
     global running
     global cookie
     global background
-    global obstacle
-    global hp, hpicon
-    global sound
 
-    sound = Backgroundsound()   # sound 바꾸기
 
     cookie = Cookie()
     game_world.add_object(cookie, 1)
@@ -43,7 +46,6 @@ def finish():
 
 def update():
     game_world.update()
-    game_world.handle_collisions()
 
 def draw():
     clear_canvas()
