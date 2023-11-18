@@ -40,10 +40,30 @@ class Happybackground:
         self.bgm = load_music('resource/bgm_happyending.mp3')
         self.bgm.set_volume(32)
         self.bgm.repeat_play()
+        self.font = load_font('resource/CookieRun Regular.TTF', 32)
+        self.x = 150
+        global size
+        global zoomin
+        zoomin = True
+        size = 32
     def draw(self):
+        global size
         self.image.draw(400, 300, 800, 600)
+        self.font = load_font('resource/CookieRun Regular.TTF', size)
+        self.font.draw(self.x, 50, f'다시 시작하려면 r키를 누르세요!', (255, 255, 0))
 
     def update(self):
+        global size
+        global zoomin
+        if zoomin == True:
+            size += 1
+            if size >= 45:
+                zoomin = False
+        else:
+            size -= 1
+            if size < 32:
+                zoomin = True
+
         pass
 
 class Shotputbackground:
