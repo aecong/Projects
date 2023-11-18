@@ -1,7 +1,7 @@
 objects = [[] for _ in range(4)]  # 보이는 세계
 
 # 충돌의 세계
-collision_pairs = {}  # {boy:ball}: [ [boy], [ball1, ball2, ball3, ...] ]
+collision_pairs = {}
 
 
 def handle_collisions():
