@@ -83,7 +83,7 @@ def init():
         game_world.add_collision_pair('popcorn:item', None, item)  # 아이템을 등록
 def finish():
     game_world.clear()
-
+    game_world.collision_pairs = {}
 
 
 def update():
