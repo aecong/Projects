@@ -9,6 +9,7 @@ import title_mode
 from background import Background, Happybackground
 from cookie import Cookie
 from hp import Hp
+from popcorn import Popcorn
 from sound import Backgroundsound
 
 
@@ -18,8 +19,8 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            Cookie.jump_sound.play()
-            game_framework.change_mode(title_mode)
+            game_framework.quit()
+
         elif event.type == SDL_KEYDOWN and event.key == SDLK_r:
             Hp.hpCnt = 850
             Cookie.itemCount = 0
@@ -27,7 +28,8 @@ def handle_events():
             Cookie.start = True
             Cookie.time = 0.0
             Cookie.jump_sound.play()
-            game_framework.change_mode(play_mode)
+            Popcorn.eat = 0
+            game_framework.change_mode(title_mode)
 
         else:
             cookie.handle_event(event)
@@ -48,6 +50,7 @@ def init():
     game_world.add_object(background, 0)
 
 def finish():
+    game_world.collision_pairs = {}
     game_world.clear()
 
 
