@@ -34,7 +34,7 @@ class Obstacle:
             self.image.draw(self.x, 200, 150, 200)
         else:
             self.image.clip_composite_draw(0, 0, 150, 200, -math.pi / 2, '', self.x, 150, 150, 200)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         if Popcorn.eat == 0:
