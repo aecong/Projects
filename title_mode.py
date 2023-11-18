@@ -31,7 +31,6 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
             Cookie.start = True
             Cookie.time = 0.0
-            Cookie.jump_sound.play()
             game_framework.change_mode(play_mode)
 
 def draw():
