@@ -25,6 +25,12 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_f:
+            if Popcorn.eat == 1:
+                Popcorn.eat = 2
+            elif Popcorn.eat == 2:
+                Popcorn.eat = 3
+                Popcorn.throwPower = Popcorn.power
         else:
             cookie.handle_event(event)
 
@@ -41,7 +47,6 @@ def init():
 
     cookie = Cookie()
     game_world.add_object(cookie, 1)
-    game_world.add_collision_pair('cookie:item', cookie, None)
     game_world.add_collision_pair('cookie:popcorn', cookie, None)
 
     hp = Hp()
@@ -57,12 +62,13 @@ def init():
     popcorn = Popcorn()
     game_world.add_object(popcorn, 2)
     game_world.add_collision_pair('cookie:popcorn', None, popcorn)
+    game_world.add_collision_pair('popcorn:item', popcorn, None)
 
     global items
-    items = [Item(random.randint(100, 1600 - 100), 200, 0) for _ in range(5)]
+    items = [Item(random.randint(100, 1600 - 100), random.randint(200, 600 - 200), 0) for _ in range(5)]
     game_world.add_objects(items, 1)
     for item in items:
-        game_world.add_collision_pair('cookie:item', None, item)  # 아이템을 등록
+        game_world.add_collision_pair('popcorn:item', None, item)  # 아이템을 등록
 def finish():
     game_world.clear()
 
