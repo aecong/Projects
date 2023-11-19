@@ -219,7 +219,7 @@ class Cookie:
     def draw(self):
         self.state_machine.draw()
         # draw_rectangle(*self.get_bb())
-        if self.time < 60:
+        if self.time < 90:
             self.font.draw(self.x, self.y + 100, f'{self.itemCount:2d}', (255, 255, 0))
             self.font.draw(600, 450, f'{Cookie.time:1f}', (255, 0, 0))
         else:
