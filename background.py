@@ -66,6 +66,23 @@ class Happybackground:
 
         pass
 
+
+class Polejumpbackground:
+    def __init__(self):
+        self.x = 0
+        self.image = load_image('resource/back3.png')
+
+    def draw(self):
+        self.image.draw(self.x, 300, 1120, 600)
+        self.image.draw(self.x+1120, 300, 1120, 600)
+        self.image.draw(self.x+2240, 300, 1120, 600)
+
+    def update(self):
+        if Popcorn.eat == 0:
+            self.x -= RUN_SPEED_PPS * game_framework.frame_time
+
+        if self.x <= -1120:
+            self.x = 0
 class Shotputbackground:
     def __init__(self):
         self.x = 0
