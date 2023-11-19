@@ -2,10 +2,8 @@ import random
 
 from pico2d import *
 
-import cookie
 import game_world
 import game_framework
-import play_mode
 from popcorn import Popcorn
 
 PIXEL_PER_METER = (10.0 / 0.3)
@@ -31,6 +29,7 @@ class Item:
     def update(self):
         if Popcorn.eat == 0:
             self.x -= RUN_SPEED_PPS * game_framework.frame_time
+
         if self.x < 25:
             game_world.remove_object(self)
 
@@ -51,3 +50,4 @@ class Item:
         elif group == 'popcorn:item':
             game_world.remove_object(self)
             Item.item_eat_sound.play()
+            return
