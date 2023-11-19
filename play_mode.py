@@ -6,6 +6,7 @@ import badending_mode
 import game_framework
 
 import game_world
+import rod_mode
 import shotput_mode
 import title_mode
 from background import Background
@@ -70,7 +71,7 @@ def update():
     game_world.update()
     game_world.handle_collisions()
     if cookie.time > 30.0:
-        game_framework.change_mode(shotput_mode)
+        game_framework.change_mode(rod_mode)
     if Hp.hpCnt <= 0:
         game_framework.change_mode(badending_mode)
 
