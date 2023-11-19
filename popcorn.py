@@ -6,7 +6,6 @@ from pico2d import *
 import game_framework
 import game_world
 from cookie import Cookie
-from item import Item
 
 
 def time_out(e):
@@ -42,19 +41,21 @@ class Popcorn:
         if Popcorn.image == None:
             self.image = load_image('resource/popcorn.png')
         self.x, self.y = random.randint(800, 1600), 200
-
+        self.angle = 0
         self.font = load_font('resource/CookieRun Regular.TTF', 32)
         Popcorn.eat = 0
+        self.updown = 0
         if not Popcorn.popcorn_eat_sound:
             Popcorn.popcorn_eat_sound = load_wav('resource/bgm_popcorn.wav')
             Popcorn.popcorn_eat_sound.set_volume(32)
 
     def draw(self):
-        self.image.draw(self.x, 200, 100, 100)
+        self.image.draw(self.x, self.y, 100, 100)
+
         if Popcorn.eat == 1:
-            self.font.draw(self.x, self.y + 60, f'{int(Popcorn.power):2d}', (255, 0, 255))
-        elif Popcorn.eat == 2:
-            self.font.draw(self.x, self.y + 60, f'{int(Popcorn.throwPower):2d}', (255, 0, 255))
+            self.font.draw(self.x, self.y, f'{int(Popcorn.power):2d}', (255, 0, 255))
+        elif Popcorn.eat == 2 or 3:
+            self.font.draw(self.x, self.y, f'{int(Popcorn.throwPower):2d}', (255, 0, 255))
 
 
     def update(self):
@@ -64,8 +65,15 @@ class Popcorn:
             Popcorn.power += POPCORN_SPEED_PPS * game_framework.frame_time
             if Popcorn.power > 10:
                 Popcorn.power = 1
-        elif Popcorn.power == 2:
-            pass
+        elif Popcorn.eat == 2:
+            # global updown
+            if self.updown == 0:
+                self.y += RUN_SPEED_PPS * game_framework.frame_time
+                if self.y > 400: self.updown = 1
+            elif self.updown == 1:
+                self.y -= RUN_SPEED_PPS * game_framework.frame_time
+                if self.y < 200: self.updown = 0
+
         elif Popcorn.eat == 3:
             POWER_SPEED_KMPH = Popcorn.throwPower * 5
             POWER_SPEED_MPM = POWER_SPEED_KMPH * 1000.0 / 60.0
@@ -75,11 +83,6 @@ class Popcorn:
             if self.x > 800:
                 self.x, self.y = random.randint(800, 1600), 200
                 Popcorn.eat = 0
-                global items
-                items = [Item(random.randint(800, 1600 - 100), random.randint(200, 800 - 200), 0) for _ in range(1)]
-                game_world.add_objects(items, 1)
-                for item in items:
-                    game_world.add_collision_pair('popcorn:item', None, item)
 
         if self.x < -100:
             self.x, self.y = random.randint(800, 1600), 200
@@ -94,5 +97,5 @@ class Popcorn:
                 Popcorn.popcorn_eat_sound.play()
                 Popcorn.eat = 1
         elif group == 'popcorn:item':
-                Cookie.itemCount += 1
+                Cookie.itemCount += 1 * int(Popcorn.throwPower)
                 return
