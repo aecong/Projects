@@ -13,6 +13,7 @@ from background import Background, Shotputbackground
 from cookie import Cookie
 from hp import Hp, Hpicon
 from item import Item
+from obstacle import Obstacle
 from popcorn import Popcorn
 from sound import Backgroundsound
 
@@ -47,17 +48,23 @@ def init():
     global hp, hpicon
     global sound
 
+
     sound = Backgroundsound()
 
     cookie = Cookie()
     game_world.add_object(cookie, 1)
     game_world.add_collision_pair('cookie:popcorn', cookie, None)
+    game_world.add_collision_pair('cookie:obstacle', cookie, None)
 
     hp = Hp()
     game_world.add_object(hp, 1)
 
     hpicon = Hpicon()
     game_world.add_object(hpicon, 2)
+
+    obstacle = Obstacle()
+    game_world.add_object(obstacle, 1)
+    game_world.add_collision_pair('cookie:obstacle', None, obstacle)
 
     background = Shotputbackground()
     game_world.add_object(background, 0)
