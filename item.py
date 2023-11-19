@@ -31,7 +31,7 @@ class Item:
     def update(self):
         if Popcorn.eat == 0:
             self.x -= RUN_SPEED_PPS * game_framework.frame_time
-        if self.x < 25 or self.x > 1600 - 25:
+        if self.x < 25:
             game_world.remove_object(self)
 
 
@@ -39,14 +39,15 @@ class Item:
         return self.x - 15, self.y - 15, self.x + 15, self.y + 15
 
     def handle_collision(self, group, other):
-        global count
+        global count, items
         if group == 'cookie:item':
             game_world.remove_object(self)
             Item.item_eat_sound.play()
-
-            global items
             items = [Item(random.randint(800, 1600 - 100), 200, 0) for _ in range(1)]
             game_world.add_objects(items, 1)
             for item in items:
-                game_world.add_collision_pair('cookie:item', None, item)  # 아이템을 등록
+                game_world.add_collision_pair('cookie:item', None, item)
             return
+        elif group == 'popcorn:item':
+            game_world.remove_object(self)
+            Item.item_eat_sound.play()
