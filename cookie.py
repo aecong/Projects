@@ -228,6 +228,7 @@ class Cookie:
                 return
             elif self.action == 0 or self.action == 1:
                 Cookie.transform_sound.play()
+                return
 
         elif group == 'cookie:item':
             if self.action == 2 or self.action == 3:
