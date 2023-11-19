@@ -5,6 +5,7 @@ from pico2d import load_image, draw_rectangle
 
 import game_framework
 import game_world
+from popcorn import Popcorn
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 30.0
@@ -35,7 +36,8 @@ class Obstacle:
 
 
     def update(self):
-        self.x -= RUN_SPEED_PPS * game_framework.frame_time
+        if Popcorn.eat == 0:
+            self.x -= RUN_SPEED_PPS * game_framework.frame_time
         if self.x < -150:
             self.x = random.randint(600, 1000)
             self.falldown = 0
