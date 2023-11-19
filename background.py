@@ -20,10 +20,9 @@ class Shotputbackground:
         self.image.draw(self.x+2096, 300, 2096, 640)
 
     def update(self):
-        if Popcorn.eat == 1:
-            self.x = self.x
-        else:
+        if Popcorn.eat == 0:
             self.x -= RUN_SPEED_PPS * game_framework.frame_time
+
         if self.x <= -2096:
             self.x = 0
 class Background:
