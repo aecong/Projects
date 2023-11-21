@@ -1,5 +1,6 @@
-
 from pico2d import *
+
+import game_framework
 import game_world
 
 
@@ -15,6 +16,20 @@ def time_out(e):
     return e[0] == 'TIME_OUT'
 
 
+PIXEL_PER_METER = (10.0 / 0.3)
+RUN_SPEED_KMPH = 20.0  # 20km/h
+RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0
+RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0
+RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
+
+# Boy Action Speed
+TIME_PER_ACTION = 0.5
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 4
+
+FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
+
+
 class Run:
 
     @staticmethod
@@ -27,12 +42,12 @@ class Run:
 
     @staticmethod
     def do(cookie):
-        cookie.frame = (cookie.frame + 1) % 4
+        cookie.frame = (cookie.frame + FRAMES_PER_TIME * game_framework.frame_time) % 4
         pass
 
     @staticmethod
     def draw(cookie):
-        cookie.image.clip_draw(cookie.frame * 160, cookie.action * 165, 160, 165, cookie.x, cookie.y)
+        cookie.image.clip_draw(int(cookie.frame) * 160, cookie.action * 165, 160, 165, cookie.x, cookie.y)
 
 
 class Jump:
@@ -52,16 +67,16 @@ class Jump:
     @staticmethod
     def do(cookie):
         cookie.frame = 2
-        if get_time() - cookie.jump_time > 0.7:
-            cookie.y -= 1
-            if cookie.y == 200:
+        if get_time() - cookie.jump_time > 1.0:
+            cookie.y -= RUN_SPEED_PPS * game_framework.frame_time
+            if cookie.y <= 200:
                 cookie.state_machine.handle_event(('TIME_OUT', 0))
         else:
-            cookie.y += 1
+            cookie.y += RUN_SPEED_PPS * game_framework.frame_time
 
     @staticmethod
     def draw(cookie):
-        cookie.image.clip_draw(cookie.frame * 160, cookie.action * 165, 160, 165, cookie.x, cookie.y)
+        cookie.image.clip_draw(int(cookie.frame) * 160, cookie.action * 165, 160, 165, cookie.x, cookie.y)
 
 
 class StateMachine:
@@ -93,6 +108,7 @@ class StateMachine:
         self.cur_state.draw(self.cookie)
 
 
+
 class Cookie:
     def __init__(self):
         self.x, self.y = 100, 200
@@ -110,4 +126,7 @@ class Cookie:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(*self.get_bb())
 
+    def get_bb(self):
+        return self.x - 70, self.y - 80, self.x + 70, self.y + 80
