@@ -17,10 +17,14 @@ def time_out(e):
 
 
 PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 20.0  # 20km/h
+RUN_SPEED_KMPH = 20.0
+JUMP_SPEED_KMPH = 30.0
 RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0
+JUMP_SPEED_MPM = JUMP_SPEED_KMPH * 1000.0 / 60.0
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0
+JUMP_SPEED_MPS = JUMP_SPEED_MPM / 60.0
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
+JUMP_SPEED_PPS = JUMP_SPEED_MPS * PIXEL_PER_METER
 
 # Boy Action Speed
 TIME_PER_ACTION = 0.5
@@ -67,12 +71,12 @@ class Jump:
     @staticmethod
     def do(cookie):
         cookie.frame = 2
-        if get_time() - cookie.jump_time > 1.0:
-            cookie.y -= RUN_SPEED_PPS * game_framework.frame_time
+        if get_time() - cookie.jump_time > 0.65:
+            cookie.y -= JUMP_SPEED_PPS * game_framework.frame_time
             if cookie.y <= 200:
                 cookie.state_machine.handle_event(('TIME_OUT', 0))
         else:
-            cookie.y += RUN_SPEED_PPS * game_framework.frame_time
+            cookie.y += JUMP_SPEED_PPS * game_framework.frame_time
 
     @staticmethod
     def draw(cookie):
@@ -129,4 +133,4 @@ class Cookie:
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x - 70, self.y - 80, self.x + 70, self.y + 80
+        return self.x - 40, self.y - 80, self.x + 40, self.y + 80
