@@ -117,6 +117,7 @@ class Cookie:
     def __init__(self):
         self.x, self.y = 100, 200
         self.frame = 0
+        self.hp = 100
         self.action = 3  # 0 : 눈빛 점프. 1 : 눈빛 달리기, 2 : 그냥 점프, 3 : 그냥 달리기
         self.image = load_image('resource/cookie_sheet.png')
         self.state_machine = StateMachine(self)
@@ -134,3 +135,8 @@ class Cookie:
 
     def get_bb(self):
         return self.x - 40, self.y - 80, self.x + 40, self.y + 80
+
+    def handle_collision(self, group, other):
+        if group == 'cookie:obstacle':
+            self.hp -= 5
+            print(self.hp)
