@@ -6,6 +6,8 @@ from pico2d import *
 import game_framework
 import game_world
 
+def time_out(e):
+    return e[0] == 'TIME_OUT'
 def f_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_f
 
@@ -33,39 +35,23 @@ class Move:
 
     @staticmethod
     def exit(popcorn, e):
-        pass
-
-    @staticmethod
-    def do(popcorn):
-        popcorn.x -= RUN_SPEED_PPS * game_framework.frame_time
-        pass
-
-    @staticmethod
-    def draw(popcorn):
-        popcorn.image.draw(popcorn.x, 200, 100, 100)
-        popcorn.font.draw(popcorn.x, popcorn.y + 60, f'{int(popcorn.power):2d}', (255, 0, 255))
-
-
-class PowerCount:
-    @staticmethod
-    def enter(popcorn, e):
-        pass
-
-    @staticmethod
-    def exit(popcorn, e):
-        Popcorn.throwPower = popcorn.power
+        popcorn.throwPower = popcorn.power
 
     @staticmethod
     def do(popcorn):
         popcorn.power += POPCORN_SPEED_PPS * game_framework.frame_time
         if popcorn.power > 10:
             popcorn.power = 1
+        if Popcorn.eat == 0:
+            popcorn.x -= RUN_SPEED_PPS * game_framework.frame_time
         pass
 
     @staticmethod
     def draw(popcorn):
         popcorn.image.draw(popcorn.x, 200, 100, 100)
-        popcorn.font.draw(popcorn.x, popcorn.y + 60, f'{int(popcorn.power):2d}', (255, 0, 255))
+        if Popcorn.eat == 1:
+            popcorn.font.draw(popcorn.x, popcorn.y + 60, f'{int(popcorn.power):2d}', (255, 0, 255))
+
 
 
 class Shoot:
@@ -78,11 +64,13 @@ class Shoot:
     @staticmethod
     def do(popcorn):
         PIXEL_PER_METER = (10.0 / 0.3)
-        POWER_SPEED_KMPH = Popcorn.throwPower * 5
+        POWER_SPEED_KMPH = popcorn.throwPower * 5
         POWER_SPEED_MPM = POWER_SPEED_KMPH * 1000.0 / 60.0
         POWER_SPEED_MPS = POWER_SPEED_MPM / 60.0
         POWER_SPEED_PPS = POWER_SPEED_MPS * PIXEL_PER_METER
         popcorn.x += POWER_SPEED_PPS * game_framework.frame_time
+        if popcorn.x > 800:
+            popcorn.state_machine.handle_event(('TIME_OUT', 0))
         pass
 
     @staticmethod
@@ -93,10 +81,10 @@ class Shoot:
 class StateMachine:
     def __init__(self, popcorn):
         self.popcorn = popcorn
-        self.cur_state = PowerCount
+        self.cur_state = Move
         self.transitions = {
-            PowerCount: {f_down: Shoot}
-            # Shoot: {time_out: Run},
+            Move: {f_down: Shoot},
+            Shoot: {time_out: Move}
         }
 
     def start(self):
@@ -108,7 +96,7 @@ class StateMachine:
     def handle_event(self, e):
         for check_event, next_state in self.transitions[self.cur_state].items():
             if check_event(e):
-                if check_event == f_down:
+                if self.cur_state == Move and check_event == f_down:
                     Popcorn.eat = 0
                 self.cur_state.exit(self.popcorn, e)
                 self.cur_state = next_state
@@ -124,7 +112,6 @@ class Popcorn:
     image = None
     popcorn_eat_sound = None
     eat = 0
-    throwPower = 0
     def __init__(self):
         if Popcorn.image == None:
             self.image = load_image('resource/popcorn.png')
@@ -132,6 +119,7 @@ class Popcorn:
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.power = 1
+        self.throwPower = 1
         self.font = load_font('resource/CookieRun Regular.TTF', 32)
         Popcorn.eat = 0
         if not Popcorn.popcorn_eat_sound:
@@ -143,25 +131,15 @@ class Popcorn:
 
     def update(self):
         self.state_machine.update()
-
         if self.x < -100 or self.x > 1600 - 100:
-           game_world.remove_object(self)
+            self.x, self.y = random.randint(800, 1600), 200
 
     def get_bb(self):
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 
-    def handle_events(self, events):
-        for e in events:
-            if f_down(e):
-                Popcorn.throwPower = self.power
-                Popcorn.eat = 2
     def handle_collision(self, group, other):
         if group == 'cookie:popcorn':
             if Popcorn.eat == 0:
                 Popcorn.popcorn_eat_sound.play()
-            # global popcorn
-            # popcorn = Popcorn()
-            # game_world.add_object(popcorn, 2)
-            # game_world.add_collision_pair('cookie:popcorn', None, popcorn)
-            Popcorn.eat = 1
+                Popcorn.eat = 1
             pass
