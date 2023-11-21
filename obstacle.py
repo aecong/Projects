@@ -36,7 +36,7 @@ class Obstacle:
             self.x = random.randint(400, 800)
 
     def get_bb(self):
-        return self.x - 75, self.y - 100, self.x + 75, self.y + 25
+        return self.x - 40, self.y - 100, self.x + 40, self.y + 10
 
     def handle_collision(self, group, other):
         if group == 'cookie:obstacle':
