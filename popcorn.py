@@ -26,7 +26,7 @@ FRAMES_PER_ACTION = 1
 
 FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 
-class PowerCount:
+class Move:
     @staticmethod
     def enter(popcorn, e):
         pass
@@ -37,12 +37,35 @@ class PowerCount:
 
     @staticmethod
     def do(popcorn):
-
+        popcorn.x -= RUN_SPEED_PPS * game_framework.frame_time
         pass
 
     @staticmethod
-    def draw(cookie):
+    def draw(popcorn):
         popcorn.image.draw(popcorn.x, 200, 100, 100)
+        popcorn.font.draw(popcorn.x, popcorn.y + 60, f'{int(popcorn.power):2d}', (255, 0, 255))
+
+
+class PowerCount:
+    @staticmethod
+    def enter(popcorn, e):
+        pass
+
+    @staticmethod
+    def exit(popcorn, e):
+        Popcorn.throwPower = popcorn.power
+
+    @staticmethod
+    def do(popcorn):
+        popcorn.power += POPCORN_SPEED_PPS * game_framework.frame_time
+        if popcorn.power > 10:
+            popcorn.power = 1
+        pass
+
+    @staticmethod
+    def draw(popcorn):
+        popcorn.image.draw(popcorn.x, 200, 100, 100)
+        popcorn.font.draw(popcorn.x, popcorn.y + 60, f'{int(popcorn.power):2d}', (255, 0, 255))
 
 
 class Shoot:
@@ -54,6 +77,12 @@ class Shoot:
         pass
     @staticmethod
     def do(popcorn):
+        PIXEL_PER_METER = (10.0 / 0.3)
+        POWER_SPEED_KMPH = Popcorn.throwPower * 5
+        POWER_SPEED_MPM = POWER_SPEED_KMPH * 1000.0 / 60.0
+        POWER_SPEED_MPS = POWER_SPEED_MPM / 60.0
+        POWER_SPEED_PPS = POWER_SPEED_MPS * PIXEL_PER_METER
+        popcorn.x += POWER_SPEED_PPS * game_framework.frame_time
         pass
 
     @staticmethod
@@ -80,8 +109,7 @@ class StateMachine:
         for check_event, next_state in self.transitions[self.cur_state].items():
             if check_event(e):
                 if check_event == f_down:
-                    pass
-
+                    Popcorn.eat = 0
                 self.cur_state.exit(self.popcorn, e)
                 self.cur_state = next_state
                 self.cur_state.enter(self.popcorn, e)
@@ -112,29 +140,13 @@ class Popcorn:
 
     def draw(self):
         self.state_machine.draw()
-        # draw_rectangle(*self.get_bb())
-        if Popcorn.eat == 1:
-            self.font.draw(self.x, self.y + 60, f'{int(self.power):2d}', (255, 0, 255))
 
     def update(self):
         self.state_machine.update()
-        # if Popcorn.eat == 1:
-        #     self.power += POPCORN_SPEED_PPS * game_framework.frame_time
-        #     if self.power > 10:
-        #         self.power = 1
-        # elif Popcorn.eat == 2:
-        #     PIXEL_PER_METER = (10.0 / 0.3)
-        #     POWER_SPEED_KMPH = Popcorn.throwPower * 5
-        #     POWER_SPEED_MPM = POWER_SPEED_KMPH * 1000.0 / 60.0
-        #     POWER_SPEED_MPS = POWER_SPEED_MPM / 60.0
-        #     POWER_SPEED_PPS = POWER_SPEED_MPS * PIXEL_PER_METER
-        #     self.x += POWER_SPEED_PPS * game_framework.frame_time
-        #
-        # elif Popcorn.eat == 0:
-        #     self.x -= RUN_SPEED_PPS * game_framework.frame_time
-        #
-        # if self.x < -100:
-        #     game_world.remove_object(self)
+
+        if self.x < -100 or self.x > 1600 - 100:
+           game_world.remove_object(self)
+
     def get_bb(self):
         return self.x - 25, self.y - 25, self.x + 25, self.y + 25
 
@@ -146,7 +158,6 @@ class Popcorn:
     def handle_collision(self, group, other):
         if group == 'cookie:popcorn':
             if Popcorn.eat == 0:
-            # game_world.remove_object(self)
                 Popcorn.popcorn_eat_sound.play()
             # global popcorn
             # popcorn = Popcorn()
