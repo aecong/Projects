@@ -35,12 +35,15 @@ def init():
 
     cookie = Cookie()
     game_world.add_object(cookie, 1)
+    game_world.add_collision_pair('cookie:obstacle', cookie, None)
 
     background = Background()
     game_world.add_object(background, 0)
 
     obstacle = Obstacle()
     game_world.add_object(obstacle, 1)
+    game_world.add_collision_pair('cookie:obstacle', None, obstacle)
+
 
 def finish():
     game_world.clear()
