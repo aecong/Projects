@@ -22,7 +22,7 @@ class Shotputbackground:
     def update(self):
         if Popcorn.eat == 1:
             self.x = self.x
-        else :
+        else:
             self.x -= RUN_SPEED_PPS * game_framework.frame_time
         if self.x <= -2096:
             self.x = 0
