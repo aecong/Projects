@@ -29,10 +29,16 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_v:
             if Popcorn.eat == 0:
                 Popcorn.eat = 1
+
             elif Popcorn.eat == 1:
                 Rod.size = Rod.frame
                 Popcorn.eat = 2
             if Rod.Mode == 0:
+                global items
+                items = [Item(random.randint(100, 800 - 100), random.randint(300, 600 - 200), 0) for _ in range(5)]
+                game_world.add_objects(items, 1)
+                for item in items:
+                    game_world.add_collision_pair('cookie:item', None, item)
                 Rod.Mode = 1
             elif Rod.Mode == 1:
                 Rod.size = Rod.frame
@@ -88,7 +94,7 @@ def init():
 
 
     global items
-    items = [Item(random.randint(100, 1600 - 100), random.randint(300, 600 - 300), 0) for _ in range(5)]
+    items = [Item(random.randint(100, 1600 - 100), random.randint(300, 600 - 200), 0) for _ in range(5)]
     game_world.add_objects(items, 1)
     for item in items:
         game_world.add_collision_pair('cookie:item', None, item)
