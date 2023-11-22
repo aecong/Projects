@@ -32,8 +32,8 @@ class Badbackground:
         self.font.draw(self.x, self.y - 50, f'다시 도전하려면 r키를 누르세요!', (15, 14, 24))
 
     def update(self):
-        self.angle += 10
-        if self.angle >= 360:
+        self.angle += 0.1
+        if self.angle >= 6.0:
             self.angle = 0
         self.x = 200 + 5 * math.cos(self.angle)
         self.y = 300 + 5 * math.sin(self.angle)
@@ -74,15 +74,18 @@ class Happybackground:
 
 
 class Polejumpbackground:
+    image = None
     def __init__(self):
         self.x = 0
-        self.image = load_image('resource/back3.png')
+        if Polejumpbackground.image == None:
+            self.image = load_image('resource/back3.png')
+            self.font = load_font('resource/CookieRun Regular.TTF', 32)
 
     def draw(self):
         self.image.draw(self.x, 300, 1120, 600)
         self.image.draw(self.x+1120, 300, 1120, 600)
         self.image.draw(self.x+2240, 300, 1120, 600)
-
+        self.font.draw(0,580,f'v키를 눌러 장대를 꺼내세요!',(255, 0, 0))
     def update(self):
         if Popcorn.eat == 0 or Rod.Mode == 0 or Rod.Mode == 2 or Rod.Mode == 3:
             if Rod.Mode == 2 or Rod.Mode == 3:
@@ -93,13 +96,17 @@ class Polejumpbackground:
         if self.x <= -1120:
             self.x = 0
 class Shotputbackground:
+    image = None
     def __init__(self):
         self.x = 0
-        self.image = load_image('resource/back2.png')
+        if Shotputbackground.image == None:
+            self.image = load_image('resource/back2.png')
+            self.font = load_font('resource/CookieRun Regular.TTF', 32)
 
     def draw(self):
         self.image.draw(self.x, 300, 2096, 640)
         self.image.draw(self.x+2096, 300, 2096, 640)
+        self.font.draw(0,580,f'f키를 눌러 팝콘(투포환)을 던지세요!',(255, 0, 0))
 
     def update(self):
         if Popcorn.eat == 0:
@@ -108,13 +115,17 @@ class Shotputbackground:
         if self.x <= -2096:
             self.x = 0
 class Background:
+    image = None
     def __init__(self):
         self.x = 0
-        self.image = load_image('resource/back1.png')
+        if Background.image == None:
+            self.image = load_image('resource/back1.png')
+            self.font = load_font('resource/CookieRun Regular.TTF', 32)
 
     def draw(self):
         self.image.draw(self.x, 300, 2834, 638)
         self.image.draw(self.x+2834, 300, 2834, 638)
+        self.font.draw(0,580,f'스페이스 바를 눌러 점프하세요!',(255, 0, 0))
 
     def update(self):
         self.x -= RUN_SPEED_PPS * game_framework.frame_time
