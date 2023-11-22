@@ -224,9 +224,9 @@ class Cookie:
     def draw(self):
         self.state_machine.draw()
         # draw_rectangle(*self.get_bb())
-        if self.time < 90:
+        if self.time < 60:
             self.font.draw(self.x, self.y + 100, f'{self.itemCount:2d}', (255, 255, 0))
-            self.font.draw(600, 450, f'{Cookie.time:1f}', (255, 0, 0))
+            self.font.draw(0, 440, f'{Cookie.time:1f}', (255, 0, 0))
         else:
             self.font = load_font('resource/CookieRun Regular.TTF', 100)
             self.font.draw(340, 200, f'{self.itemCount:2d}', (255, 255, 0))
@@ -256,7 +256,7 @@ class Cookie:
 
         elif group == 'cookie:floor':
             if self.action == 2 or self.action == 3:
-                self.y -= 20
+                self.y -= 100
                 Hp.hpCnt -= 5
                 Hp.x -= 2.5
                 Cookie.hp_sound.play()
