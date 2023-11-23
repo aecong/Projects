@@ -160,7 +160,6 @@ class StateMachine:
                     continue
                 if check_event == space_down:
                     Cookie.jump_sound.play()
-
                 if check_event == i_down:
                     if Cookie.itemCount >= 10:
                         Cookie.itemCount -= 10
