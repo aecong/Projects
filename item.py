@@ -6,6 +6,7 @@ import cookie
 import game_world
 import game_framework
 import play_mode
+from popcorn import Popcorn
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 30.0
@@ -28,7 +29,8 @@ class Item:
         self.image.draw(self.x, self.y)
 
     def update(self):
-        self.x -= RUN_SPEED_PPS * game_framework.frame_time
+        if Popcorn.eat == 0:
+            self.x -= RUN_SPEED_PPS * game_framework.frame_time
         if self.x < 25 or self.x > 1600 - 25:
             game_world.remove_object(self)
 
