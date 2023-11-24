@@ -66,7 +66,7 @@ def finish():
 def update():
     game_world.update()
     game_world.handle_collisions()
-    if Cookie.jumpCnt > 10:
+    if cookie.time > 30.0:
         game_framework.change_mode(shotput_mode)
 
 
