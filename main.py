@@ -1,5 +1,5 @@
 from pico2d import open_canvas, close_canvas
-import title_mode as start_mode
+import shotput_mode as start_mode
 # import play_mode as start_mode
 import game_framework
 
