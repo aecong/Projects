@@ -12,11 +12,12 @@ import shotput_mode
 import title_mode
 from background import Background, Shotputbackground, Polejumpbackground
 from cookie import Cookie
-from floor import Floor
+from floor import Floor, nextFloor, thirdFloor
 from hp import Hp, Hpicon
 from item import Item
 from obstacle import Obstacle
 from popcorn import Popcorn
+from rod import Rod
 from sound import Backgroundsound
 
 
@@ -27,17 +28,11 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_f:
-            if Popcorn.eat == 1:
-                Popcorn.eat = 2
-                Popcorn.throwPower = Popcorn.power
-
-            elif Popcorn.eat == 2:
-                Popcorn.eat = 3
-                items = [Item(random.randint(100, 1600 - 100), random.randint(200, 600 - 200), 0) for _ in range(10)]
-                game_world.add_objects(items, 1)
-                for item in items:
-                    game_world.add_collision_pair('popcorn:item', None, item)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_v:
+            if Popcorn.eat == 0:
+                Popcorn.eat = 1
+            elif Popcorn.eat == 1:
+                Popcorn.eat = 0
         else:
             cookie.handle_event(event)
 
@@ -56,12 +51,16 @@ def init():
     cookie = Cookie()
     game_world.add_object(cookie, 1)
     game_world.add_collision_pair('cookie:item', cookie, None)
+    game_world.add_collision_pair('cookie:floor', cookie, None)
 
     hp = Hp()
     game_world.add_object(hp, 1)
 
     hpicon = Hpicon()
     game_world.add_object(hpicon, 2)
+    global rod
+    rod = Rod()
+    game_world.add_object(rod, 2)
 
     # obstacle = Obstacle()
     # game_world.add_object(obstacle, 1)
@@ -69,9 +68,19 @@ def init():
 
     background = Polejumpbackground()
     game_world.add_object(background, 0)
+
     global floor
     floor = Floor()
     game_world.add_object(floor, 1)
+    game_world.add_collision_pair('cookie:floor', None, floor)
+    floor = nextFloor()
+    game_world.add_object(floor, 1)
+    game_world.add_collision_pair('cookie:floor', None, floor)
+    floor = thirdFloor()
+    game_world.add_object(floor, 1)
+    game_world.add_collision_pair('cookie:floor', None, floor)
+
+
     global items
     items = [Item(random.randint(100, 1600 - 100), random.randint(300, 600 - 300), 0) for _ in range(5)]
     game_world.add_objects(items, 1)
