@@ -186,9 +186,10 @@ class Cookie:
     hp_sound = None
     start = False
     time = 0.0
-
+    image = None
     def __init__(self):
-        self.image = load_image('resource/cookie_sheet.png')
+        if Cookie.image == None:
+            self.image = load_image('resource/cookie_sheet.png')
         self.x, self.y = 100, 200
         self.frame = 0
         self.font = load_font('resource/CookieRun Regular.TTF', 32)
@@ -233,8 +234,8 @@ class Cookie:
         if group == 'cookie:obstacle':
             if self.start:
                 if self.action == 2 or self.action == 3:
-                    Hp.hpCnt -= 2.5
-                    Hp.x -= 1.25
+                    Hp.hpCnt -= 5
+                    Hp.x -= 2.5
                     Cookie.hp_sound.play()
 
                 elif self.action == 0 or self.action == 1:
@@ -248,3 +249,14 @@ class Cookie:
             elif self.action == 0 or self.action == 1:
                 Cookie.itemCount += 2
                 return
+
+        elif group == 'cookie:floor':
+            if self.action == 2 or self.action == 3:
+                Hp.hpCnt -= 5
+                Hp.x -= 2.5
+                Cookie.hp_sound.play()
+                self.y -= 1
+
+            elif self.action == 0 or self.action == 1:
+                Cookie.transform_sound.play()
+
