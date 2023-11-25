@@ -5,6 +5,7 @@ from pico2d import *
 
 import game_framework
 from cookie import Cookie
+from popcorn import Popcorn
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 30.0
@@ -29,11 +30,12 @@ class Rod:
     def __init__(self):
         if Rod.image == None:
             self.image = load_image('resource/rod.png')
-        self.x, self.y = 100, 200
+        self.x, self.y = 290, 200
         self.frame = 0
 
     def draw(self):
-        self.image.clip_draw(int(self.frame) * 3404, 0, 3404, 101, self.x, self.y, 680, 20)
+        if Popcorn.eat == 1:
+            self.image.clip_draw(int(self.frame) * 851, 0, 851, 101, self.x, self.y, 340, 40)
 
 
     def update(self):
