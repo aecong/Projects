@@ -3,6 +3,7 @@ from pico2d import *
 import game_framework
 import game_world
 from hp import Hp
+from rod import Rod
 
 def space_down(e):  # 점프
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
@@ -213,7 +214,10 @@ class Cookie:
             # current_time = get_time()
             # Cookie.time += current_time - Cookie.time
             Cookie.time += POPCORN_SPEED_PPS * game_framework.frame_time
-
+        if Rod.Mode == 2 or Rod.Mode == 3:
+            self.x, self.y = Rod.X, Rod.Y
+        if Rod.Mode == 0:
+            self.x, self.y = 100, 200
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
 
@@ -255,8 +259,10 @@ class Cookie:
                 Hp.hpCnt -= 5
                 Hp.x -= 2.5
                 Cookie.hp_sound.play()
-                self.y -= 1
+                self.y -= 5
 
             elif self.action == 0 or self.action == 1:
                 Cookie.transform_sound.play()
 
+        elif group == 'cookie:nothole':
+            self.y = 200
