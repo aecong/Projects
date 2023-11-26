@@ -89,7 +89,7 @@ def finish():
 def update():
     game_world.update()
     game_world.handle_collisions()
-    if cookie.time > 90.0:
+    if cookie.time > 60.0:
         game_framework.change_mode(happyending_mode)
     if Hp.hpCnt <= 0:
         game_framework.change_mode(badending_mode)
