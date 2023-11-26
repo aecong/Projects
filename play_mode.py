@@ -7,13 +7,12 @@ import game_framework
 
 import game_world
 import rod_mode
-import shotput_mode
-import title_mode
 from background import Background
 from cookie import Cookie
 from hp import Hp, Hpicon
 from item import Item
 from obstacle import Obstacle
+from rod import Rod
 from sound import Backgroundsound
 
 
@@ -29,7 +28,7 @@ def handle_events():
 
 
 def init():
-
+    Rod.Mode = 0
     global running
     global cookie
     global background
@@ -70,7 +69,7 @@ def finish():
 def update():
     game_world.update()
     game_world.handle_collisions()
-    if cookie.time > 30.0:
+    if cookie.time > 20.0:
         game_framework.change_mode(rod_mode)
     if Hp.hpCnt <= 0:
         game_framework.change_mode(badending_mode)
