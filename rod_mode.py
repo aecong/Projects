@@ -12,7 +12,7 @@ import shotput_mode
 import title_mode
 from background import Background, Shotputbackground, Polejumpbackground
 from cookie import Cookie
-from floor import Floor, nextFloor, thirdFloor
+from floor import Floor, nextFloor, Floorelseleft, nextFloorelse
 from hp import Hp, Hpicon
 from item import Item
 from obstacle import Obstacle
@@ -32,7 +32,13 @@ def handle_events():
             if Popcorn.eat == 0:
                 Popcorn.eat = 1
             elif Popcorn.eat == 1:
-                Popcorn.eat = 0
+                Rod.size = Rod.frame
+                Popcorn.eat = 2
+            if Rod.Mode == 0:
+                Rod.Mode = 1
+            elif Rod.Mode == 1:
+                Rod.size = Rod.frame
+                Rod.Mode = 2
         else:
             cookie.handle_event(event)
 
@@ -52,6 +58,7 @@ def init():
     game_world.add_object(cookie, 1)
     game_world.add_collision_pair('cookie:item', cookie, None)
     game_world.add_collision_pair('cookie:floor', cookie, None)
+    game_world.add_collision_pair('cookie:nothole', cookie, None)
 
     hp = Hp()
     game_world.add_object(hp, 1)
@@ -61,10 +68,6 @@ def init():
     global rod
     rod = Rod()
     game_world.add_object(rod, 2)
-
-    # obstacle = Obstacle()
-    # game_world.add_object(obstacle, 1)
-    # game_world.add_collision_pair('cookie:obstacle', None, obstacle)
 
     background = Polejumpbackground()
     game_world.add_object(background, 0)
@@ -76,9 +79,14 @@ def init():
     floor = nextFloor()
     game_world.add_object(floor, 1)
     game_world.add_collision_pair('cookie:floor', None, floor)
-    floor = thirdFloor()
-    game_world.add_object(floor, 1)
-    game_world.add_collision_pair('cookie:floor', None, floor)
+
+    global floorelselr
+    floorelselr = Floorelseleft()
+    game_world.add_object(floorelselr, 1)
+    game_world.add_collision_pair('cookie:nothole', None, floorelselr)
+    floorelselr = nextFloorelse()
+    game_world.add_object(floorelselr, 1)
+    game_world.add_collision_pair('cookie:nothole', None, floorelselr)
 
 
     global items
@@ -95,7 +103,7 @@ def finish():
 def update():
     game_world.update()
     game_world.handle_collisions()
-    if cookie.time > 60.0:
+    if cookie.time > 40.0:
         game_framework.change_mode(shotput_mode)
     if Hp.hpCnt <= 0:
         game_framework.change_mode(badending_mode)
