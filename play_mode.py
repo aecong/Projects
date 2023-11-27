@@ -1,20 +1,17 @@
-from pico2d import *
+import random
 
-import cookie
+from pico2d import *
 import game_framework
+
 import game_world
 import title_mode
 from background import Background
 from cookie import Cookie
+from item import Item
 from obstacle import Obstacle
 
 
-# Game object class here
-
-
 def handle_events():
-    global running
-
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -31,11 +28,12 @@ def init():
     global background
     global obstacle
 
-    running = True
+    # running = True
 
     cookie = Cookie()
     game_world.add_object(cookie, 1)
     game_world.add_collision_pair('cookie:obstacle', cookie, None)
+    game_world.add_collision_pair('cookie:item', cookie, None)
 
     background = Background()
     game_world.add_object(background, 0)
@@ -44,7 +42,11 @@ def init():
     game_world.add_object(obstacle, 1)
     game_world.add_collision_pair('cookie:obstacle', None, obstacle)
 
-
+    global items
+    items = [Item(random.randint(100, 1600 - 100), 200, 0) for _ in range(5)]
+    game_world.add_objects(items, 1)
+    for item in items:
+        game_world.add_collision_pair('cookie:item', None, item)  # 아이템을 등록
 def finish():
     game_world.clear()
 
