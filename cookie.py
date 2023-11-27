@@ -15,8 +15,6 @@ def i_down(e):  # 아이템 사용 키
 def time_out(e):
     return e[0] == 'TIME_OUT'
 
-def crash(e):
-    return e[0] == 'CRASH'
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
@@ -48,18 +46,18 @@ class Slip:
 
     @staticmethod
     def do(cookie):
-        if get_time() - cookie.slip_time > 0.05:
+        if get_time() - cookie.slip_time > 0.25:
             cookie.state_machine.handle_event(('TIME_OUT', 0))
 
     @staticmethod
     def draw(cookie):
-        cookie.draw(cookie.x,cookie.y, 160, 165)
+        cookie.image.draw(cookie.x,cookie.y, 160, 165)
 
 class Run:
 
     @staticmethod
     def enter(cookie, e):
-        pass
+        cookie.action = 3
 
     @staticmethod
     def exit(cookie, e):
@@ -111,8 +109,8 @@ class StateMachine:
         self.cookie = cookie
         self.cur_state = Run
         self.transitions = {
-            Run: {space_down: Jump},
-            Jump: {time_out: Run, crash: Slip},
+            Run: {space_down: Jump, time_out: Slip},
+            Jump: {time_out: Run},
             Slip:{time_out: Run}
         }
 
@@ -149,6 +147,8 @@ class Cookie:
 
     def update(self):
         self.state_machine.update()
+        if isinstance(self.state_machine.cur_state, Slip):
+            self.state_machine.cur_state.do(self)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
