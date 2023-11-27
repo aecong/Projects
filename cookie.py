@@ -33,6 +33,24 @@ FRAMES_PER_ACTION = 4
 
 FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 
+class Slip:
+    @staticmethod
+    def enter(cookie, e):
+        pass
+
+    @staticmethod
+    def exit(cookie, e):
+        pass
+
+    @staticmethod
+    def do(cookie):
+        cookie.frame = (cookie.frame + FRAMES_PER_TIME * game_framework.frame_time) % 4
+        pass
+
+    @staticmethod
+    def draw(cookie):
+        cookie.image.clip_draw(int(cookie.frame) * 160, cookie.action * 165, 160, 165, cookie.x, cookie.y)
+
 
 class Run:
 
@@ -114,12 +132,14 @@ class StateMachine:
 
 
 class Cookie:
+    image = None
     def __init__(self):
+        if image == None:
+            self.image = load_image('resource/cookie_sheet.png')
         self.x, self.y = 100, 200
         self.frame = 0
         self.hp = 100
         self.action = 3  # 0 : 눈빛 점프. 1 : 눈빛 달리기, 2 : 그냥 점프, 3 : 그냥 달리기
-        self.image = load_image('resource/cookie_sheet.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
