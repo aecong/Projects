@@ -134,9 +134,8 @@ class Cookie:
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x - 40, self.y - 80, self.x + 40, self.y + 80
+        return self.x - 40, self.y - 60, self.x + 40, self.y + 60
 
     def handle_collision(self, group, other):
         if group == 'cookie:obstacle':
-            self.hp -= 5
-            print(self.hp)
+            self.hp -= 1
