@@ -41,4 +41,4 @@ class Obstacle:
 
     def handle_collision(self, group, other):
         if group == 'cookie:obstacle':
-            print('충돌')
+            pass
