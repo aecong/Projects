@@ -15,6 +15,8 @@ def i_down(e):  # 아이템 사용 키
 def time_out(e):
     return e[0] == 'TIME_OUT'
 
+def crash(e):
+    return e[0] == 'CRASH'
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 20.0
@@ -36,21 +38,22 @@ FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 class Slip:
     @staticmethod
     def enter(cookie, e):
-        pass
+        cookie.image = load_image('resource/slip.png')
+        cookie.slip_time = get_time()
+
 
     @staticmethod
     def exit(cookie, e):
-        pass
+        cookie.image = load_image('resource/cookie_sheet.png')
 
     @staticmethod
     def do(cookie):
-        cookie.frame = (cookie.frame + FRAMES_PER_TIME * game_framework.frame_time) % 4
-        pass
+        if get_time() - cookie.slip_time > 0.05:
+            cookie.state_machine.handle_event(('TIME_OUT', 0))
 
     @staticmethod
     def draw(cookie):
-        cookie.image.clip_draw(int(cookie.frame) * 160, cookie.action * 165, 160, 165, cookie.x, cookie.y)
-
+        cookie.draw(cookie.x,cookie.y, 160, 165)
 
 class Run:
 
@@ -96,6 +99,8 @@ class Jump:
         else:
             cookie.y += JUMP_SPEED_PPS * game_framework.frame_time
 
+
+
     @staticmethod
     def draw(cookie):
         cookie.image.clip_draw(int(cookie.frame) * 160, cookie.action * 165, 160, 165, cookie.x, cookie.y)
@@ -107,7 +112,8 @@ class StateMachine:
         self.cur_state = Run
         self.transitions = {
             Run: {space_down: Jump},
-            Jump: {time_out: Run}
+            Jump: {time_out: Run, crash: Slip},
+            Slip:{time_out: Run}
         }
 
     def start(self):
@@ -132,10 +138,8 @@ class StateMachine:
 
 
 class Cookie:
-    image = None
     def __init__(self):
-        if image == None:
-            self.image = load_image('resource/cookie_sheet.png')
+        self.image = load_image('resource/cookie_sheet.png')
         self.x, self.y = 100, 200
         self.frame = 0
         self.hp = 100
