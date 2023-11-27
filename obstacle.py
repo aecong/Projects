@@ -19,11 +19,12 @@ FRAMES_PER_ACTION = 1
 FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
 class Obstacle:
     image = None
+
     def __init__(self):
         if Obstacle.image == None:
             self.image = load_image('resource/obstacle.png')
-        self.x = random.randint(400, 800)
-        self.y = 200
+        self.x, self.y = random.randint(400, 800), 200
+
 
     def draw(self):
         self.image.draw(self.x, 200, 150, 200)
@@ -40,4 +41,4 @@ class Obstacle:
 
     def handle_collision(self, group, other):
         if group == 'cookie:obstacle':
-            print("충돌")
+            print('충돌')
