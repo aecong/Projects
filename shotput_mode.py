@@ -16,6 +16,7 @@ from hp import Hp, Hpicon
 from item import Item
 from obstacle import Obstacle
 from popcorn import Popcorn
+from rod import Rod
 from sound import Backgroundsound
 
 
@@ -30,18 +31,19 @@ def handle_events():
             if Popcorn.eat == 1:
                 Popcorn.eat = 2
                 Popcorn.throwPower = Popcorn.power
-
-            elif Popcorn.eat == 2:
-                Popcorn.eat = 3
-                items = [Item(random.randint(100, 1600 - 100), random.randint(200, 600 - 200), 0) for _ in range(10)]
+                items = [Item(random.randint(100, 800 - 100), random.randint(200, 600 - 200), 0) for _ in range(10)]
                 game_world.add_objects(items, 1)
                 for item in items:
                     game_world.add_collision_pair('popcorn:item', None, item)
+            elif Popcorn.eat == 2:
+                Popcorn.eat = 3
+
         else:
             cookie.handle_event(event)
 
 
 def init():
+    Rod.Mode = 4
 
     global running
     global cookie
