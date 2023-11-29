@@ -256,10 +256,10 @@ class Cookie:
 
         elif group == 'cookie:floor':
             if self.action == 2 or self.action == 3:
+                self.y -= 20
                 Hp.hpCnt -= 5
                 Hp.x -= 2.5
                 Cookie.hp_sound.play()
-                self.y -= 5
 
             elif self.action == 0 or self.action == 1:
                 Cookie.transform_sound.play()
