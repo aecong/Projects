@@ -3,14 +3,12 @@ import random
 from pico2d import *
 
 import badending_mode
-import happyending_mode
 import game_framework
 
 import game_world
-import play_mode
 import shotput_mode
 import title_mode
-from background import Background, Shotputbackground, Polejumpbackground
+from background import Polejumpbackground
 from cookie import Cookie
 from floor import Floor, nextFloor, Floorelseleft, nextFloorelse
 from hp import Hp, Hpicon
