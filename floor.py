@@ -10,7 +10,7 @@ RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
 
-ROD_SPEED_KMPH = 50.0
+ROD_SPEED_KMPH = 80.0
 ROD_SPEED_MPM = ROD_SPEED_KMPH * 1000.0 / 60.0
 ROD_SPEED_MPS = ROD_SPEED_MPM / 60.0
 ROD_SPEED_PPS = ROD_SPEED_MPS * PIXEL_PER_METER
@@ -18,7 +18,7 @@ ROD_SPEED_PPS = ROD_SPEED_MPS * PIXEL_PER_METER
 class Floor:
     image = None
     def __init__(self):
-        self.x, self.y = 0, 250
+        self.x, self.y = -100, 250
         if Floor.image == None:
             self.image = load_image('resource/newfloor.png')
 
@@ -37,17 +37,18 @@ class Floor:
             self.x = 0
 
     def get_bb(self):
-        return self.x + 25, self.y - 200, self.x + 125, self.y
+        return self.x + 25, self.y - 200, self.x + 125, self.y - 50
 
     def handle_collision(self, group, other):
         if group == 'cookie:floor':
             pass
 class Floorelseleft:
     def __init__(self):
-        self.x, self.y = 0, 250
+        self.x, self.y = -100, 250
 
     def draw(self):
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
+        pass
 
     def update(self):
         if Popcorn.eat == 0 or Rod.Mode == 0 or Rod.Mode == 2 or Rod.Mode == 3:
@@ -66,7 +67,7 @@ class Floorelseleft:
 class nextFloor:
     image = None
     def __init__(self):
-        self.x, self.y = 800, 250
+        self.x, self.y = 700, 250
         if nextFloor.image == None:
             self.image = load_image('resource/newfloor.png')
 
@@ -85,16 +86,17 @@ class nextFloor:
             self.x = 800
 
     def get_bb(self):
-        return self.x + 25, self.y - 200, self.x + 125, self.y
+        return self.x + 25, self.y - 200, self.x + 125, self.y - 50
     def handle_collision(self, group, other):
         if group == 'cookie:floor':
             pass
 class nextFloorelse:
     def __init__(self):
-        self.x, self.y = 800, 250
+        self.x, self.y = 700, 250
 
     def draw(self):
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
+        pass
 
     def update(self):
         if Popcorn.eat == 0 or Rod.Mode == 0 or Rod.Mode == 2 or Rod.Mode == 3:
