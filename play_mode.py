@@ -28,7 +28,7 @@ def handle_events():
 
 
 def init():
-    Rod.Mode = 0
+    Rod.Mode = 4
     global running
     global cookie
     global background
