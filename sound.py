@@ -3,6 +3,18 @@ from pico2d import *
 import game_framework
 
 
+class Clicksound:
+    bgm = None
+    def __init__(self):
+        if not Clicksound.bgm:
+            Clicksound.bgm = load_wav('resource/bgm_jump.wav')
+            Clicksound.bgm.set_volume(32)
+
+    def draw(self):
+        pass
+
+    def update(self):
+        pass
 class Backgroundsound:
     def __init__(self):
         self.bgm = load_music('resource/background_sound.mp3')
