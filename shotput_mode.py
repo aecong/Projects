@@ -17,7 +17,7 @@ from item import Item
 from obstacle import Obstacle
 from popcorn import Popcorn
 from rod import Rod
-from sound import Backgroundsound
+from sound import Backgroundsound, Clicksound
 
 
 def handle_events():
@@ -28,6 +28,9 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_f:
+            # global bgm
+            Clicksound.bgm.play()
+
             if Popcorn.eat == 1:
                 Popcorn.eat = 2
                 Popcorn.throwPower = Popcorn.power
@@ -53,6 +56,8 @@ def init():
 
 
     sound = Backgroundsound()
+    global bgm
+    bgm = Clicksound()
 
     cookie = Cookie()
     game_world.add_object(cookie, 1)
