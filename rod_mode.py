@@ -16,7 +16,7 @@ from item import Item
 from obstacle import Obstacle
 from popcorn import Popcorn
 from rod import Rod
-from sound import Backgroundsound
+from sound import Backgroundsound, Clicksound
 
 
 def handle_events():
@@ -29,10 +29,10 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_v:
             if Popcorn.eat == 0:
                 Popcorn.eat = 1
-
             elif Popcorn.eat == 1:
                 Rod.size = Rod.frame
                 Popcorn.eat = 2
+            Clicksound.bgm.play()
             if Rod.Mode == 0:
                 global items
                 items = [Item(random.randint(100, 800 - 100), random.randint(300, 600 - 200), 0) for _ in range(5)]
@@ -53,11 +53,11 @@ def init():
     global cookie
     global background
     global hp, hpicon
-    global sound
+    global sound, bgm
 
 
     sound = Backgroundsound()
-
+    bgm = Clicksound()
     cookie = Cookie()
     game_world.add_object(cookie, 1)
     game_world.add_collision_pair('cookie:item', cookie, None)
