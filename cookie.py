@@ -103,7 +103,6 @@ class Jump:
     def draw(cookie):
         cookie.image.clip_draw(int(cookie.frame) * 160, cookie.action * 165, 160, 165, cookie.x, cookie.y)
 
-
 class StateMachine:
     def __init__(self, cookie):
         self.cookie = cookie
@@ -141,6 +140,7 @@ class Cookie:
         self.x, self.y = 100, 200
         self.frame = 0
         self.hp = 100
+
         self.itemCount = 0
         self.action = 3  # 0 : 눈빛 점프. 1 : 눈빛 달리기, 2 : 그냥 점프, 3 : 그냥 달리기
         self.state_machine = StateMachine(self)
