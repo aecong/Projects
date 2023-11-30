@@ -33,8 +33,8 @@ class Obstacle:
 
     def update(self):
         self.x -= RUN_SPEED_PPS * game_framework.frame_time
-        if self.x < 0:
-            self.x = random.randint(400, 800)
+        if self.x < -150:
+            self.x = random.randint(600, 1000)
 
     def get_bb(self):
         return self.x - 40, self.y - 100, self.x + 40, self.y + 10
