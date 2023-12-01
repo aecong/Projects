@@ -15,7 +15,7 @@ from hp import Hp, Hpicon
 from item import Item
 from popcorn import Popcorn
 from rod import Rod
-from sound import Backgroundsound, Clicksound
+from sound import Backgroundsound, Clicksound, RodModesound
 
 
 def handle_events():
@@ -55,7 +55,7 @@ def init():
     global sound, bgm
 
 
-    sound = Backgroundsound()
+    sound = RodModesound()
     bgm = Clicksound()
     cookie = Cookie()
     game_world.add_object(cookie, 1)
