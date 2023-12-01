@@ -25,6 +25,7 @@ def handle_events():
 
 
 def init():
+
     global running
     global cookie
     global background
@@ -58,6 +59,8 @@ def finish():
 def update():
     game_world.update()
     game_world.handle_collisions()
+    if Cookie.jumpCnt > 10:
+        game_framework.change_mode(shotput_mode)
 
 
 def draw():
