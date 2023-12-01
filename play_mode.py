@@ -8,6 +8,7 @@ import shotput_mode
 import title_mode
 from background import Background
 from cookie import Cookie
+from hp import Hp
 from item import Item
 from obstacle import Obstacle
 
@@ -37,6 +38,9 @@ def init():
     game_world.add_object(cookie, 1)
     game_world.add_collision_pair('cookie:obstacle', cookie, None)
     game_world.add_collision_pair('cookie:item', cookie, None)
+
+    hp = Hp()
+    game_world.add_object(hp, 1)
 
     background = Background()
     game_world.add_object(background, 0)
