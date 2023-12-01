@@ -22,11 +22,9 @@ class Item:
 
     def draw(self):
         self.image.draw(self.x, self.y)
-        draw_rectangle(*self.get_bb())
 
     def update(self):
         self.x -= RUN_SPEED_PPS * game_framework.frame_time
-
         if self.x < 25 or self.x > 1600 - 25:
             game_world.remove_object(self)
 
@@ -39,7 +37,7 @@ class Item:
         if group == 'cookie:item':
             game_world.remove_object(self)
             global items
-            items = [Item(random.randint(100, 1600 - 100), 200, 0) for _ in range(1)]
+            items = [Item(random.randint(800, 1600 - 100), 200, 0) for _ in range(1)]
             game_world.add_objects(items, 1)
             for item in items:
                 game_world.add_collision_pair('cookie:item', None, item)  # 아이템을 등록
