@@ -21,11 +21,12 @@ class Floor:
         self.x, self.y = -100, 250
         if Floor.image == None:
             self.image = load_image('resource/newfloor.png')
-
+            self.obstacle = load_image('resource/obstacle_rod.png')
     def draw(self):
         self.image.draw(self.x, self.y, 800, 640)
         self.image.draw(self.x + 800, self.y, 800, 640)
-        draw_rectangle(*self.get_bb())
+        self.obstacle.draw(self.x + 75, self.y - 100, 100, 200)
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         if Popcorn.eat == 0 or Rod.Mode == 0 or Rod.Mode == 2 or Rod.Mode == 3:
@@ -70,11 +71,13 @@ class nextFloor:
         self.x, self.y = 700, 250
         if nextFloor.image == None:
             self.image = load_image('resource/newfloor.png')
+            self.obstacle = load_image('resource/obstacle_rod.png')
 
     def draw(self):
         self.image.draw(self.x, self.y, 800, 640)
         self.image.draw(self.x + 800, self.y, 800, 640)
-        draw_rectangle(*self.get_bb())
+        self.obstacle.draw(self.x + 75, self.y - 100, 100, 200)
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         if Popcorn.eat == 0 or Rod.Mode == 0 or Rod.Mode == 2 or Rod.Mode == 3:
