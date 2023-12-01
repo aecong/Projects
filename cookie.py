@@ -3,7 +3,6 @@ from pico2d import *
 import game_framework
 import game_world
 
-
 def space_down(e):  # 점프
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
@@ -140,9 +139,9 @@ class Cookie:
         self.x, self.y = 100, 200
         self.frame = 0
         self.hp = 100
-
+        self.font = load_font('resource/CookieRun Regular.TTF', 32)
         self.itemCount = 0
-        self.action = 3  # 0 : 눈빛 점프. 1 : 눈빛 달리기, 2 : 그냥 점프, 3 : 그냥 달리기
+        self.action = 3  # 0 : 눈빛 점프. 1 : 눈빛 달리기, 2 : 그냥 점프, 3 : 그냥 달리기 4 : 넘어지기
         self.state_machine = StateMachine(self)
         self.state_machine.start()
 
@@ -156,7 +155,7 @@ class Cookie:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb())
+        self.font.draw(self.x, self.y + 100, f'{self.itemCount:02d}', (255, 255, 0))
 
     def get_bb(self):
         return self.x - 40, self.y - 60, self.x + 40, self.y + 60
@@ -166,5 +165,4 @@ class Cookie:
             self.hp -= 1
         elif group == 'cookie:item':
             self.itemCount += 1
-            print(self.itemCount)
             return
