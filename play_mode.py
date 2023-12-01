@@ -20,9 +20,6 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_i:
-            if cookie.itemCount >= 30:
-                cookie.itemCount -= 30
         else:
             cookie.handle_event(event)
 
