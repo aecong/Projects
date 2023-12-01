@@ -23,6 +23,27 @@ class Backgroundsound:
         pass
     def update(self):
         pass
+class RodModesound:
+    def __init__(self):
+        self.bgm = load_music('resource/bgm_rodmode.mp3')
+        self.bgm.set_volume(32)
+        self.bgm.repeat_play()
+
+    def draw(self):
+        pass
+    def update(self):
+        pass
+
+class ShotputModesound:
+    def __init__(self):
+        self.bgm = load_music('resource/bgm_shotputmode.mp3')
+        self.bgm.set_volume(32)
+        self.bgm.repeat_play()
+
+    def draw(self):
+        pass
+    def update(self):
+        pass
 
 class Titlesound:
     def __init__(self):
