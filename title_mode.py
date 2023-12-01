@@ -3,6 +3,7 @@ from sdl2 import SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE
 
 import game_framework
 import play_mode
+from cookie import Cookie
 
 
 def init():
@@ -16,7 +17,8 @@ def init():
     titlelaser.frame = 0
 
 def finish():
-    pass
+    Cookie.jumpCnt = 0
+
 
 def handle_events():
     events = get_events()
