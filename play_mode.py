@@ -4,6 +4,7 @@ from pico2d import *
 import game_framework
 
 import game_world
+import shotput_mode
 import title_mode
 from background import Background
 from cookie import Cookie
@@ -18,6 +19,9 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_mode(title_mode)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_i:
+            if cookie.itemCount >= 30:
+                cookie.itemCount -= 30
         else:
             cookie.handle_event(event)
 
@@ -27,8 +31,7 @@ def init():
     global cookie
     global background
     global obstacle
-
-    # running = True
+    global hp
 
     cookie = Cookie()
     game_world.add_object(cookie, 1)
