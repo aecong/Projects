@@ -16,7 +16,7 @@ from item import Item
 from obstacle import Obstacle
 from popcorn import Popcorn
 from rod import Rod
-from sound import Backgroundsound, Clicksound
+from sound import Backgroundsound, Clicksound, ShotputModesound
 
 
 def handle_events():
@@ -54,7 +54,7 @@ def init():
     global sound
 
 
-    sound = Backgroundsound()
+    sound = ShotputModesound()
     global bgm
     bgm = Clicksound()
 
