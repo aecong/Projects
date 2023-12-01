@@ -3,7 +3,10 @@ from pico2d import *
 import game_framework
 import game_world
 from hp import Hp
+
+
 def space_down(e):  # 점프
+    Cookie.jumpCnt += 0.5
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
 
@@ -59,6 +62,8 @@ class ItemRun:
     def enter(cookie, e):
         if i_down(e):
             cookie.action = 1
+        if cookie.itemCount >= 10:
+            cookie.itemCount -= 10
         cookie.item_time = get_time()
 
     @staticmethod
@@ -172,8 +177,8 @@ class StateMachine:
             if check_event(e):
                 if self.cur_state == Run and check_event == i_down and \
                         (self.cookie.action == 0 or self.cookie.action == 1 or self.cookie.itemCount < 10):
-                    self.cookie.itemCount -= 10
                     continue
+
                 self.cur_state.exit(self.cookie, e)
                 self.cur_state = next_state
                 self.cur_state.enter(self.cookie, e)
@@ -187,17 +192,17 @@ class StateMachine:
 
 
 class Cookie:
+    jumpCnt = 0
+
     def __init__(self):
         self.image = load_image('resource/cookie_sheet.png')
         self.x, self.y = 100, 200
         self.frame = 0
-        self.hp = 100
         self.font = load_font('resource/CookieRun Regular.TTF', 32)
         self.itemCount = 0
         self.action = 3  # 0 : 눈빛 점프. 1 : 눈빛 달리기, 2 : 그냥 점프, 3 : 그냥 달리기 4 : 넘어지기
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-
     def update(self):
         self.state_machine.update()
         if isinstance(self.state_machine.cur_state, Slip):
