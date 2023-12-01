@@ -4,18 +4,12 @@ from pico2d import load_image, draw_rectangle
 
 import game_framework
 import game_world
-from hp import Hp
 
 PIXEL_PER_METER = (10.0 / 0.3)
 RUN_SPEED_KMPH = 30.0
 RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
-
-HP_SPEED_KMPH = 5.0
-HP_SPEED_MPM = HP_SPEED_KMPH * 1000.0 / 60.0
-HP_SPEED_MPS = HP_SPEED_MPM / 60.0
-HP_SPEED_PPS = HP_SPEED_MPS * PIXEL_PER_METER
 
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
@@ -34,7 +28,6 @@ class Obstacle:
 
     def draw(self):
         self.image.draw(self.x, 200, 150, 200)
-        draw_rectangle(*self.get_bb())
 
 
     def update(self):
@@ -47,6 +40,4 @@ class Obstacle:
 
     def handle_collision(self, group, other):
         if group == 'cookie:obstacle':
-            Hp.hpCnt -= 1
-            Hp.x -= HP_SPEED_PPS * game_framework.frame_time
-            return
+            pass
