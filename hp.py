@@ -19,11 +19,11 @@ class Hp:
     hpCnt = 850
     x = 0
     def __init__(self):
-        self.image = load_image('resource/hp_laser.png')
+        self.image = load_image('resource/title_laser.png')
         self.frame = 0
 
     def draw(self):
-        self.image.clip_draw(int(self.frame) * 850, 0, 850, 101, 400 + Hp.x, 500, Hp.hpCnt, 101)
+        self.image.clip_draw(int(self.frame) * 850, 0, 850, 101, 400, 500, Hp.hpCnt, 101)
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_TIME * game_framework.frame_time) % 3
