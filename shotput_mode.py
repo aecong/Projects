@@ -1,17 +1,20 @@
 import random
 
 from pico2d import *
+
+import end_mode
 import game_framework
 
 import game_world
 import play_mode
 import shotput_mode
 import title_mode
-from background import Background
+from background import Background, Shotputbackground
 from cookie import Cookie
 from hp import Hp, Hpicon
 from item import Item
 from obstacle import Obstacle
+from popcorn import Popcorn
 from sound import Backgroundsound
 
 
@@ -31,7 +34,6 @@ def init():
     global running
     global cookie
     global background
-    global obstacle
     global hp, hpicon
     global sound
 
@@ -40,6 +42,7 @@ def init():
     cookie = Cookie()
     game_world.add_object(cookie, 1)
     game_world.add_collision_pair('cookie:item', cookie, None)
+    game_world.add_collision_pair('cookie:popcorn', cookie, None)
 
     hp = Hp()
     game_world.add_object(hp, 1)
@@ -47,8 +50,13 @@ def init():
     hpicon = Hpicon()
     game_world.add_object(hpicon, 2)
 
-    background = Background()
+    background = Shotputbackground()
     game_world.add_object(background, 0)
+
+    global popcorn
+    popcorn = Popcorn()
+    game_world.add_object(popcorn, 2)
+    game_world.add_collision_pair('cookie:popcorn', None, popcorn)
 
     global items
     items = [Item(random.randint(100, 1600 - 100), 200, 0) for _ in range(5)]
@@ -62,7 +70,8 @@ def finish():
 def update():
     game_world.update()
     game_world.handle_collisions()
-
+    if cookie.time > 60.0:
+        game_framework.change_mode(end_mode)
 
 def draw():
     clear_canvas()
