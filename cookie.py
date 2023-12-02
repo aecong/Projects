@@ -12,6 +12,9 @@ def space_down(e):  # 점프
 def i_down(e):  # 아이템 사용 키
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_i
 
+def f_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_f
+
 
 def time_out(e):
     return e[0] == 'TIME_OUT'
@@ -156,8 +159,6 @@ class StateMachine:
                         (self.cookie.action == 0 or self.cookie.action == 1 or self.cookie.itemCount < 10):
                     continue
                 if check_event == space_down:
-                    Cookie.jumpCnt += 1
-                    print(Cookie.jumpCnt)
                     Cookie.jump_sound.play()
 
                 if check_event == i_down:
@@ -179,7 +180,6 @@ class StateMachine:
 
 
 class Cookie:
-    jumpCnt = 0
     speed = 0.0
     itemCount = 0
     jump_sound = None
