@@ -4,11 +4,16 @@ from pico2d import *
 import game_framework
 
 import game_world
+import play_mode
+import shotput_mode
 import title_mode
 from background import Background
 from cookie import Cookie
-from hp import Hp
+from hp import Hp, Hpicon
 from item import Item
+from obstacle import Obstacle
+from sound import Backgroundsound
+
 
 def handle_events():
     events = get_events()
@@ -22,10 +27,15 @@ def handle_events():
 
 
 def init():
+
     global running
     global cookie
     global background
-    global hp
+    global obstacle
+    global hp, hpicon
+    global sound
+
+    sound = Backgroundsound()
 
     cookie = Cookie()
     game_world.add_object(cookie, 1)
@@ -33,6 +43,9 @@ def init():
 
     hp = Hp()
     game_world.add_object(hp, 1)
+
+    hpicon = Hpicon()
+    game_world.add_object(hpicon, 2)
 
     background = Background()
     game_world.add_object(background, 0)
