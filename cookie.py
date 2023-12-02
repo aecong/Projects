@@ -6,7 +6,6 @@ from hp import Hp
 
 
 def space_down(e):  # 점프
-    Cookie.jumpCnt += 0.5
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
 
@@ -28,32 +27,11 @@ JUMP_SPEED_MPS = JUMP_SPEED_MPM / 60.0
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
 JUMP_SPEED_PPS = JUMP_SPEED_MPS * PIXEL_PER_METER
 
-# Boy Action Speed
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 4
 
 FRAMES_PER_TIME = ACTION_PER_TIME * FRAMES_PER_ACTION
-
-class Slip:
-    @staticmethod
-    def enter(cookie, e):
-        cookie.image = load_image('resource/slip.png')
-        cookie.slip_time = get_time()
-
-
-    @staticmethod
-    def exit(cookie, e):
-        cookie.image = load_image('resource/cookie_sheet.png')
-
-    @staticmethod
-    def do(cookie):
-        if get_time() - cookie.slip_time > 0.25:
-            cookie.state_machine.handle_event(('TIME_OUT', 0))
-
-    @staticmethod
-    def draw(cookie):
-        cookie.image.draw(cookie.x,cookie.y, 160, 165)
 
 
 class ItemRun:
@@ -62,13 +40,12 @@ class ItemRun:
     def enter(cookie, e):
         if i_down(e):
             cookie.action = 1
-        if cookie.itemCount >= 10:
-            cookie.itemCount -= 10
         cookie.item_time = get_time()
 
     @staticmethod
     def exit(cookie, e):
         cookie.action = 3
+        Cookie.speed = 0
 
     @staticmethod
     def do(cookie):
@@ -111,6 +88,7 @@ class ItemJump:
     @staticmethod
     def exit(cookie, e):
         cookie.action = 1
+        Cookie.speed = 0
 
     @staticmethod
     def do(cookie):
@@ -161,7 +139,6 @@ class StateMachine:
         self.transitions = {
             Run: {space_down: Jump, i_down: ItemRun},
             Jump: {time_out: Run},
-            Slip:{time_out: Run},
             ItemRun: {time_out: Run, space_down: ItemJump},
             ItemJump: {time_out: ItemRun}
         }
@@ -178,6 +155,16 @@ class StateMachine:
                 if self.cur_state == Run and check_event == i_down and \
                         (self.cookie.action == 0 or self.cookie.action == 1 or self.cookie.itemCount < 10):
                     continue
+                if check_event == space_down:
+                    Cookie.jumpCnt += 1
+                    print(Cookie.jumpCnt)
+                    Cookie.jump_sound.play()
+
+                if check_event == i_down:
+                    if Cookie.itemCount >= 10:
+                        Cookie.itemCount -= 10
+                        Cookie.speed = 10.0
+                        Cookie.transform_sound.play()
 
                 self.cur_state.exit(self.cookie, e)
                 self.cur_state = next_state
@@ -193,20 +180,35 @@ class StateMachine:
 
 class Cookie:
     jumpCnt = 0
-
+    speed = 0.0
+    itemCount = 0
+    jump_sound = None
+    transform_sound = None
+    hp_sound = None
     def __init__(self):
         self.image = load_image('resource/cookie_sheet.png')
         self.x, self.y = 100, 200
         self.frame = 0
         self.font = load_font('resource/CookieRun Regular.TTF', 32)
-        self.itemCount = 0
-        self.action = 3  # 0 : 눈빛 점프. 1 : 눈빛 달리기, 2 : 그냥 점프, 3 : 그냥 달리기 4 : 넘어지기
+        self.action = 3  # 0 : 눈빛 점프. 1 : 눈빛 달리기, 2 : 그냥 점프, 3 : 그냥 달리기
         self.state_machine = StateMachine(self)
         self.state_machine.start()
+        self.time = get_time()
+
+        if not Cookie.jump_sound:
+            Cookie.jump_sound = load_wav('resource/bgm_jump.wav')
+            Cookie.jump_sound.set_volume(32)
+        if not Cookie.transform_sound:
+            Cookie.transform_sound = load_wav('resource/bgm_transform.wav')
+            Cookie.transform_sound.set_volume(32)
+        if not Cookie.hp_sound:
+            Cookie.hp_sound = load_wav('resource/bgm_hpdecrease.wav')
+            Cookie.hp_sound.set_volume(32)
+
     def update(self):
         self.state_machine.update()
-        if isinstance(self.state_machine.cur_state, Slip):
-            self.state_machine.cur_state.do(self)
+        current_time = get_time()
+        self.time += current_time - self.time
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -214,14 +216,24 @@ class Cookie:
     def draw(self):
         self.state_machine.draw()
         self.font.draw(self.x, self.y + 100, f'{self.itemCount:2d}', (255, 255, 0))
-
+        self.font.draw(0, 550, f'{self.time:5f}', (255, 0, 0))
     def get_bb(self):
         return self.x - 40, self.y - 60, self.x + 40, self.y + 60
 
     def handle_collision(self, group, other):
         if group == 'cookie:obstacle':
-            Hp.hpCnt -= 5
-            return
+            if self.action == 2 or self.action == 3:
+                Hp.hpCnt -= 5
+                Hp.x -= 2.5
+                Cookie.hp_sound.play()
+                return
+            elif self.action == 0 or self.action == 1:
+                Cookie.transform_sound.play()
+
         elif group == 'cookie:item':
-            self.itemCount += 1
-            return
+            if self.action == 2 or self.action == 3:
+                Cookie.itemCount += 1
+                return
+            elif self.action == 0 or self.action == 1:
+                Cookie.itemCount += 2
+                return
