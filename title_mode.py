@@ -4,10 +4,12 @@ from sdl2 import SDL_KEYDOWN, SDLK_ESCAPE, SDLK_SPACE
 import game_framework
 import play_mode
 from cookie import Cookie
+from sound import Titlesound
 
 
 def init():
     global titleimage, titlelaser, titlecookie, titlename
+    global sound
     titleimage = load_image('resource/title.png')
     titlelaser = load_image('resource/title_laser.png')
     titlecookie = load_image('resource/title_cookie.png')
@@ -15,7 +17,7 @@ def init():
 
     titlecookie.frame = 0
     titlelaser.frame = 0
-
+    sound = Titlesound()
 def finish():
     Cookie.jumpCnt = 0
 
