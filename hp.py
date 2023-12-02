@@ -23,7 +23,17 @@ class Hp:
         self.frame = 0
 
     def draw(self):
-        self.image.clip_draw(int(self.frame) * 850, 0, 850, 101, 400, 500, Hp.hpCnt, 101)
+        self.image.clip_draw(int(self.frame) * 850, 0, 850, 101, 440 + Hp.x, 500, Hp.hpCnt, 101)
 
     def update(self):
         self.frame = (self.frame + FRAMES_PER_TIME * game_framework.frame_time) % 3
+
+class Hpicon:
+    def __init__(self):
+        self.image = load_image('resource/hpicon.png')
+
+    def draw(self):
+        self.image.draw(50,500,100,100)
+
+    def update(self):
+        pass
