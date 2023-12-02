@@ -5,10 +5,9 @@ from pico2d import load_image, draw_rectangle
 
 import game_framework
 import game_world
-from cookie import Cookie
 
 PIXEL_PER_METER = (10.0 / 0.3)
-RUN_SPEED_KMPH = 30.0 + Cookie.speed
+RUN_SPEED_KMPH = 30.0
 RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
