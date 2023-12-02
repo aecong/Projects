@@ -15,10 +15,14 @@ RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
 
 class Item:
     image = None
+    item_eat_sound = None
     def __init__(self, x = 400, y = 300, velocity = 1):
         if Item.image == None:
             Item.image = load_image('resource/item.png')
         self.x, self.y, self.velocity = x, y, velocity
+        if not Item.item_eat_sound:
+            Item.item_eat_sound = load_wav('resource/bgm_jelly.wav')
+            Item.item_eat_sound.set_volume(32)
 
     def draw(self):
         self.image.draw(self.x, self.y)
@@ -36,6 +40,8 @@ class Item:
         global count
         if group == 'cookie:item':
             game_world.remove_object(self)
+            Item.item_eat_sound.play()
+
             global items
             items = [Item(random.randint(800, 1600 - 100), 200, 0) for _ in range(1)]
             game_world.add_objects(items, 1)
