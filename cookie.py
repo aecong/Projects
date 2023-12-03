@@ -238,8 +238,8 @@ class Cookie:
         if group == 'cookie:obstacle':
             if self.start:
                 if self.action == 2 or self.action == 3:
-                    Hp.hpCnt -= 5
-                    Hp.x -= 2.5
+                    Hp.hpCnt -= 1
+                    Hp.x -= 0.5
                     Cookie.hp_sound.play()
 
                 elif self.action == 0 or self.action == 1:
@@ -257,8 +257,8 @@ class Cookie:
         elif group == 'cookie:floor':
             if self.action == 2 or self.action == 3:
                 self.y -= 100
-                Hp.hpCnt -= 5
-                Hp.x -= 2.5
+                Hp.hpCnt -= 1
+                Hp.x -= 0.5
                 Cookie.hp_sound.play()
 
             elif self.action == 0 or self.action == 1:
