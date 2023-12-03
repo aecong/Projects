@@ -80,7 +80,7 @@ class Popcorn:
             POWER_SPEED_PPS = POWER_SPEED_MPS * PIXEL_PER_METER
 
             self.x += POWER_SPEED_PPS * game_framework.frame_time
-            self.y -= 0.25 * Popcorn.throwPower
+            self.y -= 0.01 * Popcorn.throwPower**2
             if self.x > 800:
                 self.x, self.y = random.randint(800, 1600), 200
                 Popcorn.eat = 0
