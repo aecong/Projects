@@ -9,8 +9,8 @@ RUN_SPEED_MPM = RUN_SPEED_KMPH * 1000.0 / 60.0
 RUN_SPEED_MPS = RUN_SPEED_MPM / 60.0
 RUN_SPEED_PPS = RUN_SPEED_MPS * PIXEL_PER_METER
 
-MOVE_X_SPEED_KMPH = 20.0
-MOVE_Y_SPEED_KMPH = 40.0
+MOVE_X_SPEED_KMPH = 15.0
+MOVE_Y_SPEED_KMPH = 30.0
 MOVE_X_SPEED_MPM = MOVE_X_SPEED_KMPH * 1000.0 / 60.0
 MOVE_Y_SPEED_MPM = MOVE_Y_SPEED_KMPH * 1000.0 / 60.0
 MOVE_X_SPEED_MPS = MOVE_X_SPEED_MPM / 60.0
@@ -18,8 +18,8 @@ MOVE_Y_SPEED_MPS = MOVE_Y_SPEED_MPM / 60.0
 MOVE_X_SPEED_PPS = MOVE_X_SPEED_MPS * PIXEL_PER_METER
 MOVE_Y_SPEED_PPS = MOVE_Y_SPEED_MPS * PIXEL_PER_METER
 
-MOVE_X1_SPEED_KMPH = 30.0
-MOVE_Y1_SPEED_KMPH = 45.0
+MOVE_X1_SPEED_KMPH = 20.0
+MOVE_Y1_SPEED_KMPH = 40.0
 MOVE_X1_SPEED_MPM = MOVE_X1_SPEED_KMPH * 1000.0 / 60.0
 MOVE_Y1_SPEED_MPM = MOVE_Y1_SPEED_KMPH * 1000.0 / 60.0
 MOVE_X1_SPEED_MPS = MOVE_X1_SPEED_MPM / 60.0
@@ -64,7 +64,7 @@ class Rod:
         elif Rod.Mode == 2:
             if self.angle == 0:
                 Rod.X = self.x - 170
-            self.angle += 0.1
+            self.angle += 0.01
             if int(Rod.size) == 0 or int(Rod.size) == 2:
                 self.x = 200 + Rod.size * math.cos(self.angle)
                 self.y = 300 + Rod.size * math.sin(self.angle)
@@ -79,7 +79,7 @@ class Rod:
                 Rod.Mode = 3
 
         elif Rod.Mode == 3:
-            self.angle += 0.1
+            self.angle += 0.01
             if int(Rod.size) == 0 or int(Rod.size) == 2:
                 self.x = 200 + Rod.size * math.cos(self.angle)
                 self.y = 300 + Rod.size * math.sin(self.angle)
